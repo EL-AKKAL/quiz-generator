@@ -36,4 +36,15 @@ export interface User {
     updated_at: string;
 }
 
+export interface Quiz {
+    id: number;
+    title: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+    slug: string;
+    status: boolean;
+    expire_date: string | null;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;

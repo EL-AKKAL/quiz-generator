@@ -36,6 +36,22 @@ export interface User {
     updated_at: string;
 }
 
+export interface Option {
+    id: number;
+    text: string;
+}
+export interface Question {
+    id: number;
+    quiz_id: number;
+    type: string;
+    question: string;
+    description: string | null;
+    data: {
+        options?: Array<Option>;
+    };
+    created_at: string;
+    updated_at: string;
+}
 export interface Quiz {
     id: number;
     title: string;
@@ -45,6 +61,7 @@ export interface Quiz {
     slug: string;
     status: boolean;
     expire_date: string | null;
+    questions: Array<Question>;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\QuizController;
 
-Route::redirect('/', '/dashboard');
+Route::redirect('/', '/dashboard')->name('home');
 
 Route::middleware('auth')->group(function () {
 
@@ -12,11 +12,7 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::controller(QuizController::class)->name('quiz.')->group(function () {
-        Route::get('/quizzes', 'index')->name('index');
-        Route::get('quiz/{quiz}', 'show')->name('show');
-        Route::post('quiz', 'store')->name('store');
-    });
+    Route::resource('quizzes', QuizController::class);
 });
 
 

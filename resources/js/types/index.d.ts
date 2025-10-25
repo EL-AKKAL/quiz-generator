@@ -61,6 +61,7 @@ export interface Quiz {
     slug: string;
     status: boolean;
     expire_date: string | null;
+    picture?: string;
     questions: Array<Question>;
 }
 

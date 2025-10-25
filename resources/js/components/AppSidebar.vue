@@ -12,9 +12,17 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+
+import QuizController from '@/actions/App/Http/Controllers/QuizController';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Award } from 'lucide-vue-next';
+import {
+    Award,
+    BadgePlus,
+    BookOpen,
+    Folder,
+    LayoutGrid,
+} from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -23,10 +31,15 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
-     {
+    {
         title: 'Quizzes',
-        href: '/quizzes',
-        icon: Award  ,
+        href: QuizController.index.url(),
+        icon: Award,
+    },
+    {
+        title: 'Create Quiz',
+        href: QuizController.create.url(),
+        icon: BadgePlus,
     },
 ];
 

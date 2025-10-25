@@ -1,20 +1,33 @@
 <script setup lang="ts">
+import QuizController from '@/actions/App/Http/Controllers/QuizController';
 import type { Quiz } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { FilePenLine, Heart, Trash } from 'lucide-vue-next';
 import { defineProps } from 'vue';
+import Badge from './ui/badge/Badge.vue';
 import Button from './ui/button/Button.vue';
 
 defineProps<{ item: Quiz }>();
+
+function deleteQuiz(id: number) {
+    if (confirm('Are you sure you want to delete this quiz?')) {
+        // Perform deletion logic here
+        console.log(`Quiz with ID ${id} deleted.`);
+    }
+}
 </script>
 <template>
     <div>
         <div
-            class="w-full5 max-w-sm overflow-hidden rounded-lg bg-white shadow-md"
+            class="w-full5 min-h-[512px] max-w-sm overflow-hidden rounded-lg bg-white shadow-md"
         >
             <div class="relative">
                 <img
-                    src="https://github.com/unovue.png"
+                    :src="
+                        item.picture
+                            ? `storage/${item.picture}`
+                            : 'https://github.com/unovue.png'
+                    "
                     alt="Product image"
                     class="h-64 w-full object-cover"
                 />
@@ -35,10 +48,17 @@ defineProps<{ item: Quiz }>();
                     </div>
                 </div>
                 <div class="py-2">
-                    <p class="text-lg font-bold text-green-600">
-                        {{ item.status }}
+                    <Badge
+                        :class="
+                            item.status
+                                ? 'bg-chart-2 text-destructive-foreground'
+                                : 'bg-destructive text-destructive-foreground'
+                        "
+                        >{{ item.status ? 'Active' : 'Inactive' }}</Badge
+                    >
+                    <p class="py-2 text-sm text-gray-600">
+                        expires on : {{ item.expire_date?.split(' ')[0] }}
                     </p>
-                    <p class="text-sm text-gray-600">{{ item.expire_date }}</p>
                 </div>
                 <p class="mb-4 line-clamp-3 text-sm text-gray-600">
                     {{ item.description }}
@@ -48,11 +68,16 @@ defineProps<{ item: Quiz }>();
                         :as="Link"
                         size="sm"
                         class="flex items-center justify-between gap-1.5 text-sm"
-                        :href="`/quiz/${item.id}`"
+                        :href="QuizController.edit.url({ quiz: item.id })"
                     >
                         <FilePenLine class="h-4 w-4" /> Edit
                     </Button>
-                    <Button variant="ghost" class="text-destructive" size="sm">
+                    <Button
+                        variant="ghost"
+                        @click="deleteQuiz(item.id)"
+                        class="text-destructive"
+                        size="sm"
+                    >
                         <Trash class="h-4 w-4" /> Delete
                     </Button>
                 </div>

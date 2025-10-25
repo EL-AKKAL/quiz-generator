@@ -19,7 +19,7 @@ function deleteQuiz(id: number) {
 <template>
     <div>
         <div
-            class="w-full5 min-h-[512px] max-w-sm overflow-hidden rounded-lg bg-white shadow-md"
+            class="w-full5 min-h-[480px] max-w-sm overflow-hidden rounded-lg bg-white shadow-md"
         >
             <div class="relative">
                 <img
@@ -31,11 +31,31 @@ function deleteQuiz(id: number) {
                     alt="Product image"
                     class="h-64 w-full object-cover"
                 />
-                <button
-                    class="absolute top-2 right-2 rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
-                >
-                    <Heart class="h-4 w-4" />
-                </button>
+
+                <div class="flex space-x-2">
+                    <Button
+                        :as="Link"
+                        size="sm"
+                        variant="ghost"
+                        class="absolute top-2 right-2 rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
+                        :href="QuizController.edit.url({ quiz: item.id })"
+                    >
+                        <FilePenLine class="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        @click="deleteQuiz(item.id)"
+                        class="absolute top-2 right-12 rounded-full bg-white p-2 text-destructive shadow-md transition-colors duration-200 hover:bg-gray-100"
+                        size="sm"
+                    >
+                        <Trash class="h-4 w-4" />
+                    </Button>
+                    <button
+                        class="absolute top-2 right-24 rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
+                    >
+                        <Heart class="h-4 w-4" />
+                    </button>
+                </div>
             </div>
             <div class="p-4">
                 <div class="mb-2 flex items-start justify-between">
@@ -63,24 +83,6 @@ function deleteQuiz(id: number) {
                 <p class="mb-4 line-clamp-3 text-sm text-gray-600">
                     {{ item.description }}
                 </p>
-                <div class="flex space-x-2">
-                    <Button
-                        :as="Link"
-                        size="sm"
-                        class="flex items-center justify-between gap-1.5 text-sm"
-                        :href="QuizController.edit.url({ quiz: item.id })"
-                    >
-                        <FilePenLine class="h-4 w-4" /> Edit
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        @click="deleteQuiz(item.id)"
-                        class="text-destructive"
-                        size="sm"
-                    >
-                        <Trash class="h-4 w-4" /> Delete
-                    </Button>
-                </div>
             </div>
         </div>
     </div>

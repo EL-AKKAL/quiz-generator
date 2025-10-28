@@ -17,11 +17,4 @@ class QuizFactory extends Factory
             "expire_date" => $this->faker->dateTimeBetween('now', '+1 year'),
         ];
     }
-
-    public function configure()
-    {
-        return $this->afterCreating(function ($quiz) {
-            \App\Models\Question::factory(10)->create(['quiz_id' => $quiz->id]);
-        });
-    }
 }

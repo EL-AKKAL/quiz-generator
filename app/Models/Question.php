@@ -16,6 +16,11 @@ class Question extends Model
         'data',
         'quiz_id',
     ];
+
+    protected $casts = [
+        'data' => 'array',
+    ];
+
     public function quiz()
     {
         return $this->belongsTo(Quiz::class);

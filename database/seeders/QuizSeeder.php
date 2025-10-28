@@ -10,8 +10,7 @@ class QuizSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Quiz::factory()
-            ->count(5)
-            ->hasQuestions(10)
+            ->count(10)
             ->create();
     }
 }

@@ -10,10 +10,10 @@ return new class extends Migration {
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('type', 45);
+            $table->string('type', 45)->nullable();
             $table->string('question', 2000);
             $table->string('description')->nullable();
-            $table->longText('data')->nullable();
+            $table->json('data')->nullable();
             $table->foreignIdFor(App\Models\Quiz::class, 'quiz_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 

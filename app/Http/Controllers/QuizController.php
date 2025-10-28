@@ -60,7 +60,7 @@ class QuizController extends Controller
 
     public function edit(string $id)
     {
-        $quiz = auth()->user()->quizzes()->find($id);
+        $quiz = auth()->user()->quizzes()->with('questions')->find($id);
         return inertia('Quizzes/Edit', [
             'quiz' => $quiz,
         ]);

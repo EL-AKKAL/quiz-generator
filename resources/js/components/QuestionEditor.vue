@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Empty from '@/components/Empty.vue';
 import { Question } from '@/types';
 import { Plus, Trash } from 'lucide-vue-next';
 import Button from './ui/button/Button.vue';
@@ -115,12 +116,10 @@ function dataChange() {
                             <Plus class="h-4 w-4" />
                         </Button>
                     </div>
-                    <div
+                    <Empty
                         v-if="!question.data?.options?.length"
-                        class="mt-4 w-full rounded-sm border-2 border-dashed p-4 text-center text-gray-600"
-                    >
-                        you have no options yet.
-                    </div>
+                        unit="options"
+                    />
                     <div v-else class="space-y-4">
                         <div
                             v-for="(option, index) in question.data.options"

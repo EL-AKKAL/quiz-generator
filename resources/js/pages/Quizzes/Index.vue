@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Empty from '@/components/Empty.vue';
 import QuizItem from '@/components/QuizItem.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Quiz, type BreadcrumbItem } from '@/types';
@@ -18,7 +19,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 <template>
     <Head title="Quizzes" />
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="grid w-full gap-4 p-5 md:grid-cols-2 lg:grid-cols-3">
+        <Empty v-if="!quizzes.length" unit="quizzes" />
+        <div v-else class="grid w-full gap-4 p-5 md:grid-cols-2 lg:grid-cols-3">
             <QuizItem v-for="quiz in quizzes" :key="quiz.id" :item="quiz" />
         </div>
     </AppLayout>

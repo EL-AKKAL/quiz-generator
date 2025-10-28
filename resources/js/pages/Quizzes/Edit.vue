@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import QuizController from '@/actions/App/Http/Controllers/QuizController';
+import Empty from '@/components/Empty.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import QuestionEditor from '@/components/QuestionEditor.vue';
@@ -157,12 +158,7 @@ function updateQuestion(index: number, updatedQuestion: any) {
                         Add Question
                     </Button>
                 </div>
-                <div
-                    v-if="!quiz?.questions?.length"
-                    class="col-span-2 rounded-sm border-2 border-dashed py-5 text-center text-gray-600"
-                >
-                    No questions added yet.
-                </div>
+                <Empty v-if="!quiz.questions?.length" unit="questions" />
                 <div v-else class="col-span-2 space-y-4">
                     <div
                         v-for="(question, index) in quiz.questions"

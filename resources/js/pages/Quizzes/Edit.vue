@@ -4,9 +4,7 @@ import Empty from '@/components/Empty.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import QuestionEditor from '@/components/QuestionEditor.vue';
-import Avatar from '@/components/ui/avatar/Avatar.vue';
-import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue';
-import AvatarImage from '@/components/ui/avatar/AvatarImage.vue';
+import QuizPicture from '@/components/quizzes/ui/QuizPicture.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
@@ -58,17 +56,7 @@ function updateQuestion(index: number, updatedQuestion: any) {
                 v-slot="{ errors, processing }"
             >
                 <div class="col-span-2 grid w-full grid-cols-2 items-center">
-                    <Avatar class="h-20 w-20">
-                        <AvatarImage
-                            :src="
-                                quiz.picture
-                                    ? `/storage/${quiz.picture}`
-                                    : 'https://github.com/unovue.png'
-                            "
-                            :alt="quiz.title"
-                        />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+                    <QuizPicture :picture="quiz.picture" :title="quiz.title" />
                     <div>
                         <Label for="picture">Quiz Picture</Label>
                         <Input id="picture" name="picture" type="file" />

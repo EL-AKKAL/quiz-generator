@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import QuizController from '@/actions/App/Http/Controllers/QuizController';
+import QuizPicture from '@/components/quizzes/ui/QuizPicture.vue';
 import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import type { IQuiz } from '@/types';
@@ -22,16 +23,11 @@ function deleteQuiz(id: number) {
             class="w-full5 min-h-[480px] max-w-sm overflow-hidden rounded-lg bg-white shadow-md"
         >
             <div class="relative">
-                <img
-                    :src="
-                        quiz.picture
-                            ? `storage/${quiz.picture}`
-                            : 'https://github.com/unovue.png'
-                    "
-                    alt="Product image"
-                    class="h-64 w-full object-cover"
+                <QuizPicture
+                    class="h-64 w-full rounded-none !object-cover"
+                    :picture="quiz.picture"
+                    :title="quiz.title"
                 />
-
                 <div class="flex space-x-2">
                     <Button
                         :as="Link"

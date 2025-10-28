@@ -1,21 +1,11 @@
 <script setup lang="ts">
-import QuizController from '@/actions/App/Http/Controllers/QuizController';
 import QuizPicture from '@/components/quizzes/ui/QuizPicture.vue';
 import Badge from '@/components/ui/badge/Badge.vue';
-import Button from '@/components/ui/button/Button.vue';
 import type { IQuiz } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { FilePenLine, Heart, Trash } from 'lucide-vue-next';
 import { defineProps } from 'vue';
+import Actions from './ui/Actions.vue';
 
 defineProps<{ quiz: IQuiz }>();
-
-function deleteQuiz(id: number) {
-    if (confirm('Are you sure you want to delete this quiz?')) {
-        // Perform deletion logic here
-        console.log(`Quiz with ID ${id} deleted.`);
-    }
-}
 </script>
 <template>
     <div>
@@ -28,30 +18,7 @@ function deleteQuiz(id: number) {
                     :picture="quiz.picture"
                     :title="quiz.title"
                 />
-                <div class="flex space-x-2">
-                    <Button
-                        :as="Link"
-                        size="sm"
-                        variant="ghost"
-                        class="absolute top-2 right-2 rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
-                        :href="QuizController.edit.url({ quiz: quiz.id })"
-                    >
-                        <FilePenLine class="h-4 w-4" />
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        @click="deleteQuiz(quiz.id)"
-                        class="absolute top-2 right-12 rounded-full bg-white p-2 text-destructive shadow-md transition-colors duration-200 hover:bg-gray-100"
-                        size="sm"
-                    >
-                        <Trash class="h-4 w-4" />
-                    </Button>
-                    <button
-                        class="absolute top-2 right-24 rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
-                    >
-                        <Heart class="h-4 w-4" />
-                    </button>
-                </div>
+                <Actions :id="quiz.id" />
             </div>
             <div class="p-4">
                 <div class="mb-2 flex items-start justify-between">

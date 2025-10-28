@@ -52,7 +52,7 @@ export interface Question {
     created_at: string;
     updated_at: string;
 }
-export interface Quiz {
+export interface IQuiz {
     id: number;
     title: string;
     description: string;

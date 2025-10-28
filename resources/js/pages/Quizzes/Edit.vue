@@ -13,12 +13,12 @@ import Label from '@/components/ui/label/Label.vue';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Quiz, type BreadcrumbItem } from '@/types';
+import { IQuiz, type BreadcrumbItem } from '@/types';
 import { Form, Link, usePage } from '@inertiajs/vue3';
 import { Loader2, Plus, Save, Undo2 } from 'lucide-vue-next';
 const page = usePage();
 
-const quiz: Quiz = page.props.quiz as Quiz;
+const quiz: IQuiz = page.props.quiz as IQuiz;
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import QuizController from '@/actions/App/Http/Controllers/QuizController';
-import type { Quiz } from '@/types';
+import Badge from '@/components/ui/badge/Badge.vue';
+import Button from '@/components/ui/button/Button.vue';
+import type { IQuiz } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { FilePenLine, Heart, Trash } from 'lucide-vue-next';
 import { defineProps } from 'vue';
-import Badge from './ui/badge/Badge.vue';
-import Button from './ui/button/Button.vue';
 
-defineProps<{ item: Quiz }>();
+defineProps<{ quiz: IQuiz }>();
 
 function deleteQuiz(id: number) {
     if (confirm('Are you sure you want to delete this quiz?')) {
@@ -24,8 +24,8 @@ function deleteQuiz(id: number) {
             <div class="relative">
                 <img
                     :src="
-                        item.picture
-                            ? `storage/${item.picture}`
+                        quiz.picture
+                            ? `storage/${quiz.picture}`
                             : 'https://github.com/unovue.png'
                     "
                     alt="Product image"
@@ -38,13 +38,13 @@ function deleteQuiz(id: number) {
                         size="sm"
                         variant="ghost"
                         class="absolute top-2 right-2 rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
-                        :href="QuizController.edit.url({ quiz: item.id })"
+                        :href="QuizController.edit.url({ quiz: quiz.id })"
                     >
                         <FilePenLine class="h-4 w-4" />
                     </Button>
                     <Button
                         variant="ghost"
-                        @click="deleteQuiz(item.id)"
+                        @click="deleteQuiz(quiz.id)"
                         class="absolute top-2 right-12 rounded-full bg-white p-2 text-destructive shadow-md transition-colors duration-200 hover:bg-gray-100"
                         size="sm"
                     >
@@ -63,25 +63,26 @@ function deleteQuiz(id: number) {
                         <h2
                             class="mb-1 line-clamp-1 text-xl font-semibold text-gray-800"
                         >
-                            {{ item.title }}
+                            {{ quiz.title }}
                         </h2>
                     </div>
                 </div>
                 <div class="py-2">
                     <Badge
                         :class="
-                            item.status
+                            quiz.status
                                 ? 'bg-chart-2 text-destructive-foreground'
                                 : 'bg-destructive text-destructive-foreground'
                         "
-                        >{{ item.status ? 'Active' : 'Inactive' }}</Badge
                     >
+                        {{ quiz.status ? 'Active' : 'Inactive' }}
+                    </Badge>
                     <p class="py-2 text-sm text-gray-600">
-                        expires on : {{ item.expire_date?.split(' ')[0] }}
+                        expires on : {{ quiz.expire_date?.split(' ')[0] }}
                     </p>
                 </div>
                 <p class="mb-4 line-clamp-3 text-sm text-gray-600">
-                    {{ item.description }}
+                    {{ quiz.description }}
                 </p>
             </div>
         </div>

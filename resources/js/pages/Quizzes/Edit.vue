@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import QuizController from '@/actions/App/Http/Controllers/QuizController';
+import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
+import QuestionEditor from '@/components/QuestionEditor.vue';
 import Avatar from '@/components/ui/avatar/Avatar.vue';
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue';
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue';
@@ -12,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Quiz, type BreadcrumbItem } from '@/types';
 import { Form, Link, usePage } from '@inertiajs/vue3';
-import { Loader2, Save, Undo2 } from 'lucide-vue-next';
+import { Loader2, Plus, Save, Undo2 } from 'lucide-vue-next';
 const page = usePage();
 
 const quiz: Quiz = page.props.quiz as Quiz;
@@ -29,6 +31,21 @@ const breadcrumbs: BreadcrumbItem[] = [
 const formConfig = quiz.id
     ? QuizController.update.form({ quiz: quiz.id })
     : QuizController.store.form();
+
+function addQuestion() {
+    // Logic to add a new question
+    console.log('Add Question clicked');
+}
+
+function deleteQuestion(index: number) {
+    // Logic to delete a question at the given index
+    console.log(`Delete Question at index ${index} clicked`);
+}
+
+function updateQuestion(index: number, updatedQuestion: any) {
+    // Logic to update a question at the given index
+    console.log(`Update Question at index ${index} clicked`, updatedQuestion);
+}
 </script>
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
@@ -116,7 +133,7 @@ const formConfig = quiz.id
                     <InputError class="mt-2" :message="errors.expire_date" />
                 </div>
 
-                <div class="flex items-end justify-start gap-2">
+                <div class="col-span-2 flex items-end justify-start gap-2">
                     <Switch
                         :value="quiz.status ? 'on' : 'off'"
                         id="status"
@@ -127,7 +144,46 @@ const formConfig = quiz.id
 
                     <InputError class="mt-2" :message="errors.status" />
                 </div>
-                <div class="mt-5 flex w-full items-center justify-end gap-4">
+
+                <div
+                    class="col-span-2 my-5 flex items-center justify-between gap-2"
+                >
+                    <!-- questions -->
+
+                    <Heading class="!mb-0" title="Questions" />
+
+                    <Button size="sm" @click="addQuestion">
+                        <Plus class="h-4 w-4" />
+                        Add Question
+                    </Button>
+                </div>
+                <div
+                    v-if="!quiz?.questions?.length"
+                    class="col-span-2 rounded-sm border-2 border-dashed py-5 text-center text-gray-600"
+                >
+                    No questions added yet.
+                </div>
+                <div v-else class="col-span-2 space-y-4">
+                    <div
+                        v-for="(question, index) in quiz.questions"
+                        :key="question.id"
+                        class="rounded-md border p-4"
+                    >
+                        <QuestionEditor
+                            :question="question"
+                            :index="index"
+                            :update-question="
+                                (updatedQuestion) =>
+                                    updateQuestion(index, updatedQuestion)
+                            "
+                            :add-question="addQuestion"
+                            :delete-question="() => deleteQuestion(index)"
+                        />
+                    </div>
+                </div>
+                <div
+                    class="col-span-2 mt-5 flex w-full items-center justify-end gap-4"
+                >
                     <Button type="submit" :disabled="processing" size="sm">
                         <Loader2
                             v-if="processing"
@@ -135,15 +191,6 @@ const formConfig = quiz.id
                         />
                         <Save v-else class="h-4 w-4" /> Save Changes
                     </Button>
-                    <!-- <Button
-                        :disabled="processing"
-                        variant="secondary"
-                        size="sm"
-                        type="button"
-                        @click="resetAndClearErrors()"
-                    >
-                        <RotateCcw class="h-4 w-4" /> Reset Form
-                    </Button> -->
                     <Button
                         variant="secondary"
                         size="sm"

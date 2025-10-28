@@ -1,0 +1,155 @@
+<script setup lang="ts">
+import { Question } from '@/types';
+import { Plus, Trash } from 'lucide-vue-next';
+import Button from './ui/button/Button.vue';
+import Input from './ui/input/Input.vue';
+import Label from './ui/label/Label.vue';
+import { Separator } from './ui/separator';
+import Textarea from './ui/textarea/Textarea.vue';
+
+const props = defineProps<{
+    question: Question;
+    index: number;
+    updateQuestion: (question: Question) => void;
+    addQuestion: () => void;
+    deleteQuestion: () => void;
+}>();
+function shouldHaveOptions() {
+    return props.question.type === 'select' || props.question.type === 'radio';
+}
+function addOption() {
+    console.log('add option clicked');
+}
+function deleteOption(optIndex: number) {
+    console.log('delete option clicked');
+}
+function dataChange() {
+    console.log('option data changed');
+}
+</script>
+<template>
+    <div>
+        <div class="flex w-full items-center justify-between">
+            <h3 class="font-bold">Question {{ question.question }}</h3>
+            <div>
+                <Button
+                    @click="deleteQuestion"
+                    size="sm"
+                    variant="ghost"
+                    class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
+                >
+                    <Trash class="h-4 w-4" />
+                </Button>
+                <Button
+                    @click="addQuestion"
+                    size="sm"
+                    variant="ghost"
+                    class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
+                >
+                    <Plus class="h-4 w-4" />
+                </Button>
+            </div>
+        </div>
+        <Separator orientation="vertical" class="mx-auto my-6 !h-px !w-full" />
+
+        <div class="w-full space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="grid gap-1.5">
+                    <Label for="question-{{ question.id ?? index }}">
+                        Question text
+                    </Label>
+
+                    <Input
+                        id="question-{{ question.id ?? index }}"
+                        type="text"
+                        v-model="question.question"
+                        @input="updateQuestion(question)"
+                    />
+                </div>
+                <div class="grid gap-1.5">
+                    <Label for="question-type-{{ question.id ?? index }}">
+                        Question type
+                    </Label>
+                    <select
+                        id="question-type-{{ question.id ?? index }}"
+                        v-model="question.type"
+                        @change="updateQuestion(question)"
+                        class="rounded-md border border-gray-300 p-2"
+                    >
+                        <option disabled value="">Select question type</option>
+                        <option value="text">Short answer</option>
+                        <option value="select">Multiple choice</option>
+                        <option value="radio">One choice</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2 grid gap-1.5">
+                    <Label
+                        for="question-description-{{ question.id ?? index }}"
+                    >
+                        Description (optional)
+                    </Label>
+                    <Textarea
+                        class="mt-1 block w-full resize-none"
+                        name="description"
+                        :default-value="question.description ?? ''"
+                        autocomplete="description"
+                        placeholder="Enter quiz description"
+                        id="question-description-{{ question.id ?? index }}"
+                        rows="4"
+                        @input="updateQuestion(question)"
+                    />
+                </div>
+            </div>
+            <div class="grid grid-cols-1 gap-4">
+                <div v-if="shouldHaveOptions()">
+                    <div class="flex w-full justify-between">
+                        <Label class="font-semibold">Options</Label>
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            class="mt-2"
+                            @click="addOption()"
+                        >
+                            <Plus class="h-4 w-4" />
+                        </Button>
+                    </div>
+                    <div
+                        v-if="!question.data?.options?.length"
+                        class="mt-4 w-full rounded-sm border-2 border-dashed p-4 text-center text-gray-600"
+                    >
+                        you have no options yet.
+                    </div>
+                    <div v-else class="space-y-4">
+                        <div
+                            v-for="(option, index) in question.data.options"
+                            :key="index"
+                            class="space-y-4"
+                        >
+                            <span>Option {{ index + 1 }}.</span>
+                            <div
+                                class="flex w-full items-center space-y-0 space-x-2"
+                            >
+                                <Input
+                                    type="text"
+                                    v-model="option.text"
+                                    @change="dataChange"
+                                    class="w-full"
+                                />
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
+                                    @click="deleteOption(index)"
+                                >
+                                    <Trash class="h-4 w-4" />
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

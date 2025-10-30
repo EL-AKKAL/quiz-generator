@@ -100,7 +100,7 @@ class QuizController extends Controller
 
             $quiz = auth()->user()->quizzes()->find($id);
             if (isset($validated['status']))
-            $validated['status'] = in_array($validated['status'], ['on', '1', 'true']);
+                $validated['status'] = in_array($validated['status'], ['on', '1', 'true']);
             if ($request->hasFile('picture')) {
                 if ($quiz->picture)
                     \Illuminate\Support\Facades\Storage::disk('public')->delete($quiz->picture);

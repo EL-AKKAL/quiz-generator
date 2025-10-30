@@ -35,6 +35,8 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
         v-bind="formConfig"
         class="grid w-full max-w-3xl gap-4 !p-5 pt-0 md:grid-cols-1 lg:grid-cols-2"
         v-slot="{ errors, processing }"
+        @success="() => toast.success('Quiz saved successfully! 🎉')"
+        @error="() => toast.error('Failed to save quiz. Please try again.')"
     >
         <div class="col-span-2 grid w-full grid-cols-2 items-center">
             <QuizPicture :picture="quiz.picture" :title="quiz.title" />

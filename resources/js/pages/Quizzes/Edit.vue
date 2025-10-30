@@ -6,19 +6,20 @@ import { IQuiz, type BreadcrumbItem } from '@/types';
 import { usePage } from '@inertiajs/vue3';
 const page = usePage();
 
-const quiz: IQuiz = page.props.quiz as IQuiz;
+const id = page.props.quiz ? (page.props.quiz as IQuiz).id : undefined;
+const title = page.props.quiz ? (page.props.quiz as IQuiz).title : '';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: quiz.id ? `Edit ${quiz.title}` : 'New Quiz',
-        href: quiz.id
-            ? QuizController.edit.url({ quiz: quiz.id })
+        title: id ? `Edit ${title}` : 'New Quiz',
+        href: id
+            ? QuizController.edit.url({ quiz: id })
             : QuizController.create.url(),
     },
 ];
 </script>
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
-        <Form :key="quiz.id" />
+        <Form :key="id" />
     </AppLayout>
 </template>

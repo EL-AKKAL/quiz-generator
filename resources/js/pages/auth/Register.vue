@@ -9,6 +9,7 @@ import AuthBase from '@/layouts/AuthLayout.vue';
 import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 </script>
 
 <template>
@@ -23,6 +24,10 @@ import { LoaderCircle } from 'lucide-vue-next';
             :reset-on-success="['password', 'password_confirmation']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
+            @success="() => toast.success('Account created successfully! 🎉')"
+            @error="
+                () => toast.error('Failed to create account. Please try again.')
+            "
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">

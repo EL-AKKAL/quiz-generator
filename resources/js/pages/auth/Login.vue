@@ -11,6 +11,7 @@ import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 
 defineProps<{
     status?: string;
@@ -37,6 +38,12 @@ defineProps<{
             :reset-on-success="['password']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
+            @success="
+                () => toast.success(`Welcom : ${$page.props.auth.user.name}`)
+            "
+            @error="
+                () => toast.error('something went wrong , please try again')
+            "
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">

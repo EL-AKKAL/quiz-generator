@@ -11,6 +11,7 @@ import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
 import { LogOut, Settings } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 
 interface Props {
     user: User;
@@ -18,6 +19,7 @@ interface Props {
 
 const handleLogout = () => {
     router.flushAll();
+    toast.success('Goodbye! 👋');
 };
 
 defineProps<Props>();

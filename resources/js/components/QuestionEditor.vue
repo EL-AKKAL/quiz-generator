@@ -12,8 +12,8 @@ const props = defineProps<{
     question: Question;
     index: number;
     updateQuestion: (question: Question) => void;
-    addQuestion: () => void;
-    deleteQuestion: () => void;
+    addQuestion: (index: number) => void;
+    deleteQuestion: (index: number) => void;
 }>();
 function shouldHaveOptions() {
     return props.question.type === 'select' || props.question.type === 'radio';
@@ -31,20 +31,22 @@ function dataChange() {
 <template>
     <div>
         <div class="flex w-full items-center justify-between">
-            <h3 class="font-bold">Question {{ question.question }}</h3>
+            <h3 class="font-bold">Question {{ question.question ?? index }}</h3>
             <div>
                 <Button
-                    @click="deleteQuestion"
+                    @click="deleteQuestion(index)"
                     size="sm"
                     variant="ghost"
+                    type="button"
                     class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
                 >
                     <Trash class="h-4 w-4" />
                 </Button>
                 <Button
-                    @click="addQuestion"
+                    @click="addQuestion(index)"
                     size="sm"
                     variant="ghost"
+                    type="button"
                     class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
                 >
                     <Plus class="h-4 w-4" />

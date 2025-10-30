@@ -13,21 +13,38 @@ import { Textarea } from '@/components/ui/textarea';
 import { IQuiz } from '@/types';
 import { Form, Link, usePage } from '@inertiajs/vue3';
 import { Loader2, Plus, Save, Undo2 } from 'lucide-vue-next';
+import { reactive } from 'vue';
+import { toast } from 'vue-sonner';
 
 const page = usePage();
-const quiz: IQuiz = page.props.quiz as IQuiz;
+const quiz: IQuiz = reactive({ ...(page.props.quiz as IQuiz) });
 
 const formConfig = quiz.id
     ? QuizController.update.form({ quiz: quiz.id })
     : QuizController.store.form();
 
-const addQuestion = () => console.log('Add Question clicked');
+const addQuestion = (index?: number) => {
+    const newQuestion = {
+        quiz_id: quiz.id,
+        id: Date.now(),
+        question: '',
+        type: 'text',
+        data: {
+            options: [],
+        },
+        description: '',
+        created_at: '',
+        updated_at: '',
+    };
+    if (!quiz.questions) quiz.questions = [];
+    if (index !== undefined) quiz.questions.splice(index + 1, 0, newQuestion);
+    else quiz.questions.push(newQuestion);
+};
 
-const deleteQuestion = (index: number) =>
-    console.log(`Delete Question at index ${index} clicked`);
+const deleteQuestion = (index: number) => quiz.questions?.splice(index, 1);
 
 const updateQuestion = (index: number, updatedQuestion: any) =>
-    console.log(`Update Question at index ${index} clicked`, updatedQuestion);
+    Object.assign(quiz.questions[index], updatedQuestion);
 </script>
 <template>
     <Form
@@ -116,11 +133,8 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
         </div>
 
         <div class="col-span-2 my-5 flex items-center justify-between gap-2">
-            <!-- questions -->
-
             <Heading class="!mb-0" title="Questions" />
-
-            <Button size="sm" @click="addQuestion">
+            <Button type="button" size="sm" @click="addQuestion()">
                 <Plus class="h-4 w-4" />
                 Add Question
             </Button>
@@ -143,6 +157,11 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
                     :delete-question="() => deleteQuestion(index)"
                 />
             </div>
+            <input
+                type="hidden"
+                name="questions"
+                :value="JSON.stringify(quiz.questions)"
+            />
         </div>
         <div class="col-span-2 mt-5 flex w-full items-center justify-end gap-4">
             <Button type="submit" :disabled="processing" size="sm">

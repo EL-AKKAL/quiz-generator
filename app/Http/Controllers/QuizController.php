@@ -70,6 +70,11 @@ class QuizController extends Controller
     public function update(Request $request, string $id)
     {
         try {
+            if (is_string($request->questions)) {
+                $request->merge([
+                    'questions' => json_decode($request->questions, true),
+                ]);
+            }
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
                 'slug' => 'required|string|max:255',
@@ -77,6 +82,20 @@ class QuizController extends Controller
                 'expire_date' => 'nullable|date',
                 'status' => 'required|in:on,off,1,0,true,false',
                 'picture' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+                'questions.*.id' => 'required|integer',
+                'questions.*.question' => 'required|string|max:255',
+                'questions.*.type' => 'required|string|in:text,select,radio',
+                'questions.*.data' => [
+                    'required',
+                    function ($attribute, $value, $fail) {
+                        if (!is_array($value) && !is_string($value)) {
+                            $fail("The {$attribute} field must be an array or a string.");
+                        }
+                    },
+                ],
+                'questions.*.data.options' => 'required_if:questions.*.type,select,radio|array',
+                'questions.*.data.options.*.id' => 'required|integer|exists:options,id',
+                'questions.*.data.options.*.value' => 'required|string|max:255',
             ]);
 
             $quiz = auth()->user()->quizzes()->find($id);
@@ -86,6 +105,12 @@ class QuizController extends Controller
                     \Illuminate\Support\Facades\Storage::disk('public')->delete($quiz->picture);
 
                 $validated['picture'] = $request->file('picture')->store('quizzes', 'public');
+            }
+            foreach ($validated['questions'] as $question) {
+                $quiz->questions()->updateOrCreate(
+                    ['id' => $question['id']],
+                    $question
+                );
             }
             $quiz->update($validated);
             return redirect()->route('quizzes.index');

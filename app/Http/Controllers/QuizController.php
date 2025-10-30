@@ -80,7 +80,7 @@ class QuizController extends Controller
                 'slug' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'expire_date' => 'nullable|date',
-                'status' => 'required|in:on,off,1,0,true,false',
+                'status' => 'nullable|in:on,off,1,0,true,false',
                 'picture' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
                 'questions.*.id' => 'required|integer',
                 'questions.*.question' => 'required|string|max:255',
@@ -99,6 +99,7 @@ class QuizController extends Controller
             ]);
 
             $quiz = auth()->user()->quizzes()->find($id);
+            if (isset($validated['status']))
             $validated['status'] = in_array($validated['status'], ['on', '1', 'true']);
             if ($request->hasFile('picture')) {
                 if ($quiz->picture)

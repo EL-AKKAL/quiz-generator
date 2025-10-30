@@ -10,6 +10,7 @@ import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { formatDate } from '@/lib/utils';
 import { IQuiz } from '@/types';
 import { Form, Link, usePage } from '@inertiajs/vue3';
 import { Loader2, Plus, Save, Undo2 } from 'lucide-vue-next';
@@ -111,9 +112,7 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
                 class="mt-1 block w-full"
                 name="expire_date"
                 type="date"
-                :default-value="
-                    quiz.expire_date ? quiz.expire_date.split(' ')[0] : ''
-                "
+                :default-value="formatDate(quiz.expire_date)"
                 autocomplete="expire_date"
                 placeholder="Enter expiration date"
             />

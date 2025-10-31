@@ -85,17 +85,10 @@ class QuizController extends Controller
                 'questions.*.id' => 'required|integer',
                 'questions.*.question' => 'required|string|max:255',
                 'questions.*.type' => 'required|string|in:text,select,radio',
-                'questions.*.data' => [
-                    'required',
-                    function ($attribute, $value, $fail) {
-                        if (!is_array($value) && !is_string($value)) {
-                            $fail("The {$attribute} field must be an array or a string.");
-                        }
-                    },
-                ],
-                'questions.*.data.options' => 'required_if:questions.*.type,select,radio|array',
-                'questions.*.data.options.*.id' => 'required|integer|exists:options,id',
-                'questions.*.data.options.*.value' => 'required|string|max:255',
+                'questions.*.data' => 'nullable|array',
+                'questions.*.data.options' => 'nullable|array',
+                'questions.*.data.options.*.id' => 'nullable|integer',
+                'questions.*.data.options.*.text' => 'nullable|string|max:255',
             ]);
 
             $quiz = auth()->user()->quizzes()->find($id);

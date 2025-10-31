@@ -15,18 +15,21 @@ const props = defineProps<{
     addQuestion: (index: number) => void;
     deleteQuestion: (index: number) => void;
 }>();
-function shouldHaveOptions() {
-    return props.question.type === 'select' || props.question.type === 'radio';
-}
-function addOption() {
-    console.log('add option clicked');
-}
-function deleteOption(optIndex: number) {
-    console.log('delete option clicked');
-}
-function dataChange() {
-    console.log('option data changed');
-}
+
+const shouldHaveOptions = () =>
+    props.question.type === 'select' || props.question.type === 'radio';
+
+const addOption = () => {
+    if (!props.question.data) props.question.data = { options: [] };
+    if (!props.question.data.options) props.question.data.options = [];
+    props.question.data.options.push({
+        id: Date.now(),
+        text: '',
+    });
+};
+
+const deleteOption = (optIndex: number) =>
+    props.question.data?.options?.splice(optIndex, 1);
 </script>
 <template>
     <div>
@@ -112,6 +115,7 @@ function dataChange() {
                         <Button
                             size="sm"
                             variant="outline"
+                            type="button"
                             class="mt-2"
                             @click="addOption()"
                         >
@@ -124,25 +128,25 @@ function dataChange() {
                     />
                     <div v-else class="space-y-4">
                         <div
-                            v-for="(option, index) in question.data.options"
+                            v-for="(option, dex) in question.data.options"
                             :key="index"
                             class="space-y-4"
                         >
-                            <span>Option {{ index + 1 }}.</span>
+                            <span>Option {{ dex + 1 }}.</span>
                             <div
                                 class="flex w-full items-center space-y-0 space-x-2"
                             >
                                 <Input
                                     type="text"
                                     v-model="option.text"
-                                    @change="dataChange"
                                     class="w-full"
                                 />
                                 <Button
                                     size="sm"
                                     variant="ghost"
+                                    type="button"
                                     class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
-                                    @click="deleteOption(index)"
+                                    @click="deleteOption(dex)"
                                 >
                                     <Trash class="h-4 w-4" />
                                 </Button>

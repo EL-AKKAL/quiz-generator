@@ -56,10 +56,12 @@ defineProps<{ id: number }>();
                         </DialogDescription>
                     </DialogHeader>
 
-                    <DialogFooter class="gap-2">
+                    <DialogFooter class="grid grid-cols-2 gap-2">
                         <DialogClose as-child>
                             <Button
                                 variant="secondary"
+                                size="sm"
+                                class="w-full"
                                 @click="
                                     () => {
                                         clearErrors();
@@ -73,6 +75,8 @@ defineProps<{ id: number }>();
 
                         <Button
                             type="submit"
+                            size="sm"
+                            class="w-full"
                             variant="destructive"
                             :disabled="processing"
                             data-test="confirm-delete-quiz-button"

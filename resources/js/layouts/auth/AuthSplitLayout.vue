@@ -2,6 +2,7 @@
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { home } from '@/routes';
 import { Link, usePage } from '@inertiajs/vue3';
+import AuthBackground from './AuthBackground.vue';
 
 const page = usePage();
 const name = page.props.name;
@@ -18,21 +19,26 @@ defineProps<{
         class="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0"
     >
         <div
-            class="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r"
+            class="relative hidden h-screen flex-col overflow-hidden rounded-r-2xl bg-muted p-10 text-muted-foreground lg:flex dark:border-r"
         >
-            <div class="absolute inset-0 bg-zinc-900" />
+            <AuthBackground />
             <Link
                 :href="home()"
-                class="relative z-20 flex items-center text-lg font-medium"
+                class="relative z-20 flex items-center text-lg font-medium text-sidebar-accent-foreground"
             >
-                <AppLogoIcon class="mr-2 size-8 fill-current text-white" />
+                <AppLogoIcon class="mr-2 size-8 fill-current" />
                 {{ name }}
             </Link>
             <div v-if="quote" class="relative z-20 mt-auto">
                 <blockquote class="space-y-2">
-                    <p class="text-lg">&ldquo;{{ quote.message }}&rdquo;</p>
+                    <p class="text-lg">
+                        &ldquo;Use demo user if you dont have an account&rdquo;
+                    </p>
                     <footer class="text-sm text-neutral-300">
-                        {{ quote.author }}
+                        email: test@example.com
+                    </footer>
+                    <footer class="text-sm text-neutral-300">
+                        password: password
                     </footer>
                 </blockquote>
             </div>

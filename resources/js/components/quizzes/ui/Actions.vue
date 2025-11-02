@@ -19,20 +19,19 @@ defineProps<{ id: number }>();
         <Button
             :as="Link"
             size="sm"
-            variant="ghost"
-            class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
+            class="flex size-8 items-center justify-center rounded-full text-primary-foreground shadow-md"
             :href="QuizController.edit.url({ quiz: id })"
         >
-            <FilePenLine class="h-4 w-4" />
+            <FilePenLine class="!h-3.5" />
         </Button>
         <Dialog>
             <DialogTrigger as-child>
                 <Button
                     variant="destructive"
-                    class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
+                    class="flex size-8 cursor-pointer items-center justify-center rounded-full text-primary-foreground shadow-md"
                     data-test="delete-quiz-button"
                 >
-                    <Trash class="h-4 w-4" />
+                    <Trash class="!h-3.5" />
                 </Button>
             </DialogTrigger>
             <DialogContent>

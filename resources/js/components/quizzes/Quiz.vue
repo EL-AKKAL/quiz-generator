@@ -40,9 +40,15 @@ const activeStatus = computed(() =>
                     </div>
                 </div>
                 <div class="space-y-3 py-1">
-                    <Badge :class="activeClass">
-                        {{ activeStatus }}
-                    </Badge>
+                    <div class="flex w-full items-center justify-between">
+                        <p class="text-sm font-medium text-foreground">
+                            {{ quiz.questions_count }} Questions
+                        </p>
+                        <Badge :class="activeClass">
+                            {{ activeStatus }}
+                        </Badge>
+                    </div>
+
                     <p
                         v-if="quiz.description"
                         class="line-clamp-3 text-sm text-muted-foreground"

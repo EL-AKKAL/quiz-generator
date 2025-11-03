@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import NavFooter from '@/components/NavFooter.vue';
+import QuizController from '@/actions/App/Http/Controllers/QuizController';
 import NavMain from '@/components/NavMain.vue';
-import NavUser from '@/components/NavUser.vue';
 import {
     Sidebar,
     SidebarContent,
@@ -11,19 +10,23 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
-
-import QuizController from '@/actions/App/Http/Controllers/QuizController';
+import { dashboard, logout } from '@/routes';
+import { edit } from '@/routes/profile';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import {
     Award,
     BadgePlus,
-    BookOpen,
-    Folder,
     LayoutGrid,
+    LogOut,
+    Settings,
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import Button from './ui/button/Button.vue';
+import UserInfo from './UserInfo.vue';
+
+const page = usePage();
+const user = page.props.auth.user;
 
 const mainNavItems: NavItem[] = [
     {
@@ -45,14 +48,14 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
+        title: 'Settings',
+        href: edit(),
+        icon: Settings,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
+        title: 'Logout',
+        href: logout(),
+        icon: LogOut,
     },
 ];
 </script>
@@ -76,8 +79,15 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
-            <NavUser />
+            <Button
+                variant="ghost"
+                size="lg"
+                class="p-4 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                data-test="sidebar-menu-button"
+            >
+                <UserInfo :user="user" :show-email="true" />
+            </Button>
+            <NavMain :show-title="false" :items="footerNavItems" />
         </SidebarFooter>
     </Sidebar>
     <slot />

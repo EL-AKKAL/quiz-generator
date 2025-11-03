@@ -38,6 +38,7 @@ defineProps<Props>();
                         </a>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
+                <slot />
             </SidebarMenu>
         </SidebarGroupContent>
     </SidebarGroup>

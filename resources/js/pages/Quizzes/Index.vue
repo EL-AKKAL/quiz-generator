@@ -2,10 +2,10 @@
 import QuizController from '@/actions/App/Http/Controllers/QuizController';
 import List from '@/components/quizzes/List.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { IQuiz, type BreadcrumbItem } from '@/types';
+import { IQuiz, Paginator, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 
-defineProps<{ quizzes: Array<IQuiz> }>();
+defineProps<{ quizzes: Paginator<IQuiz> }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

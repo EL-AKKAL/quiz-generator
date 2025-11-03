@@ -63,6 +63,20 @@ export interface IQuiz {
     expire_date: string | null;
     picture?: string;
     questions: Array<Question>;
+    questions_count: number;
 }
+
+export type Paginator<T> = {
+    data: T[];
+    first_page_url: string;
+    last_page_url: string;
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    links: PaginationLink[];
+    next_page_url: string | null;
+    prev_page_url: string | null;
+};
 
 export type BreadcrumbItemType = BreadcrumbItem;

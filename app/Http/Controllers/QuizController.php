@@ -9,7 +9,7 @@ class QuizController extends Controller
 
     public function index()
     {
-        $quizzes = auth()->user()->quizzes()->withCount('questions')->orderBy('created_at', 'desc')->get();
+        $quizzes = auth()->user()->quizzes()->withCount('questions')->orderBy('created_at', 'desc')->paginate(6);
 
         return inertia('Quizzes/Index', [
             'quizzes' => $quizzes,

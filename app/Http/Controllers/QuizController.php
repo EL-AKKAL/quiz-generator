@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuizRequest;
+use App\Services\PictureService;
 use App\Services\QuizService;
 
 class QuizController extends Controller
@@ -59,6 +60,10 @@ class QuizController extends Controller
     public function destroy(string $id)
     {
         $quiz = user()->quizzes()->findOrFail($id);
+
+        PictureService::delete($quiz->picture);
+
+        $quiz->questions()->delete();
 
         $quiz->delete();
 

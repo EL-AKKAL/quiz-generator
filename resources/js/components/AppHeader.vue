@@ -192,7 +192,7 @@ const rightNavItems: NavItem[] = [
                         <Button
                             variant="ghost"
                             size="icon"
-                            class="group h-9 w-9 cursor-pointer"
+                            class="group h-9 w-9"
                         >
                             <Search
                                 class="size-5 opacity-80 group-hover:opacity-100"
@@ -211,7 +211,7 @@ const rightNavItems: NavItem[] = [
                                                 variant="ghost"
                                                 size="icon"
                                                 as-child
-                                                class="group h-9 w-9 cursor-pointer"
+                                                class="group h-9 w-9"
                                             >
                                                 <a
                                                     :href="toUrl(item.href)"

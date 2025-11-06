@@ -28,7 +28,7 @@ defineProps<{ id: number }>();
             <DialogTrigger as-child>
                 <Button
                     variant="destructive"
-                    class="flex size-8 cursor-pointer items-center justify-center rounded-full text-primary-foreground shadow-md"
+                    class="flex size-8 items-center justify-center rounded-full text-primary-foreground shadow-md"
                     data-test="delete-quiz-button"
                 >
                     <Trash class="!h-3.5" />

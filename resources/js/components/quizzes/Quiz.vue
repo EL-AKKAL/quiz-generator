@@ -29,7 +29,7 @@ const activeStatus = computed(() =>
                     :picture="quiz.picture"
                     :title="quiz.title"
                 />
-                <Actions :id="quiz.id" />
+                <Actions :id="quiz.id" :slug="quiz.slug" />
             </div>
             <div class="p-4">
                 <div class="mb-2 flex items-start justify-between">

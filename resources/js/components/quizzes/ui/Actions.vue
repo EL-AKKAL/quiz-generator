@@ -10,12 +10,19 @@ import DialogHeader from '@/components/ui/dialog/DialogHeader.vue';
 import DialogTitle from '@/components/ui/dialog/DialogTitle.vue';
 import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue';
 import { Form, Link } from '@inertiajs/vue3';
-import { FilePenLine, Trash } from 'lucide-vue-next';
+import { FilePenLine, SquareArrowOutUpRight, Trash } from 'lucide-vue-next';
 
-defineProps<{ id: number }>();
+defineProps<{ id: number; slug: string }>();
 </script>
 <template>
     <div class="absolute top-2 right-2 flex space-x-2">
+        <a
+            class="flex size-8 items-center justify-center rounded-full bg-background shadow-md"
+            target="_blank"
+            :href="`/view/quiz/${slug}`"
+        >
+            <SquareArrowOutUpRight class="!h-3.5" />
+        </a>
         <Button
             :as="Link"
             size="sm"
@@ -24,6 +31,7 @@ defineProps<{ id: number }>();
         >
             <FilePenLine class="!h-3.5" />
         </Button>
+
         <Dialog>
             <DialogTrigger as-child>
                 <Button

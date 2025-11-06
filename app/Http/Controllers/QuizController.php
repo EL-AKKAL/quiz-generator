@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\QuizRequest;
+use App\Services\QuizService;
 
 class QuizController extends Controller
 {
 
     public function index()
     {
-        $quizzes = auth()->user()->quizzes()->withCount('questions')->orderBy('created_at', 'desc')->paginate(6);
+        $quizzes = user()->quizzes()->withCount('questions')->orderBy('created_at', 'desc')->paginate(6);
 
         return inertia('Quizzes/Index', [
             'quizzes' => $quizzes,
@@ -23,100 +24,44 @@ class QuizController extends Controller
         ]);
     }
 
-
-    public function store(Request $request)
+    public function store(QuizRequest $request)
     {
-        try {
-            $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'slug' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'expire_date' => 'nullable|date',
-                'status' => 'required|in:on,off,1,0,true,false',
-                'picture' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            ]);
+        QuizService::save(null, $request->validated(), $request->file('picture'));
 
-            $validated['status'] = in_array($validated['status'], ['on', '1', 'true']);
-
-            if ($request->hasFile('picture')) {
-                $validated['picture'] = $request->file('picture')->store('quizzes', 'public');
-            }
-
-            auth()->user()->quizzes()->create($validated);
-
-            return redirect()->route('quizzes.index');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->withErrors($e->validator)->withInput();
-        }
+        return redirect()->route('quizzes.index');
     }
 
     public function show(string $id)
     {
-        $quiz = auth()->user()->quizzes()->find($id);
-        return inertia('Quizzes/Edit', [
-            'quiz' => $quiz,
-        ]);
+        $quiz = user()->quizzes()->with('questions')->findOrFail($id);
+
+        return inertia('Quizzes/Edit', ['quiz' => $quiz]);
     }
 
     public function edit(string $id)
     {
-        $quiz = auth()->user()->quizzes()->with('questions')->find($id);
+        $quiz = user()->quizzes()->with('questions')->findOrFail($id);
+
         return inertia('Quizzes/Edit', [
             'quiz' => $quiz,
         ]);
     }
 
-
-    public function update(Request $request, string $id)
+    public function update(QuizRequest $request, string $id)
     {
-        try {
-            if (is_string($request->questions)) {
-                $request->merge([
-                    'questions' => json_decode($request->questions, true),
-                ]);
-            }
-            $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'slug' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'expire_date' => 'nullable|date',
-                'status' => 'nullable|in:on,off,1,0,true,false',
-                'picture' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-                'questions.*.id' => 'required|integer',
-                'questions.*.question' => 'required|string|max:255',
-                'questions.*.type' => 'required|string|in:text,select,radio',
-                'questions.*.data' => 'nullable|array',
-                'questions.*.data.options' => 'nullable|array',
-                'questions.*.data.options.*.id' => 'nullable|integer',
-                'questions.*.data.options.*.text' => 'nullable|string|max:255',
-            ]);
+        $quiz = user()->quizzes()->findOrFail($id);
 
-            $quiz = auth()->user()->quizzes()->find($id);
-            if (isset($validated['status']))
-                $validated['status'] = in_array($validated['status'], ['on', '1', 'true']);
-            if ($request->hasFile('picture')) {
-                if ($quiz->picture)
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($quiz->picture);
+        QuizService::save($quiz, $request->validated(), $request->file('picture'));
 
-                $validated['picture'] = $request->file('picture')->store('quizzes', 'public');
-            }
-            foreach ($validated['questions'] as $question) {
-                $quiz->questions()->updateOrCreate(
-                    ['id' => $question['id']],
-                    $question
-                );
-            }
-            $quiz->update($validated);
-            return redirect()->route('quizzes.index');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->withErrors($e->validator)->withInput();
-        }
+        return redirect()->route('quizzes.index');
     }
 
     public function destroy(string $id)
     {
-        $quiz = auth()->user()->quizzes()->find($id);
+        $quiz = user()->quizzes()->findOrFail($id);
+
         $quiz->delete();
+
         return redirect()->route('quizzes.index');
     }
 }

@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import Empty from '@/components/Empty.vue';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Question } from '@/types';
 import { Plus, Trash } from 'lucide-vue-next';
 import Button from './ui/button/Button.vue';
@@ -35,22 +44,20 @@ const deleteOption = (optIndex: number) =>
     <div>
         <div class="flex w-full items-center justify-between">
             <h3 class="font-bold">Question {{ question.question ?? index }}</h3>
-            <div>
+            <div class="space-x-2">
                 <Button
                     @click="deleteQuestion(index)"
                     size="sm"
-                    variant="ghost"
+                    variant="outline"
                     type="button"
-                    class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
                 >
                     <Trash class="h-4 w-4" />
                 </Button>
                 <Button
                     @click="addQuestion(index)"
                     size="sm"
-                    variant="ghost"
+                    variant="outline"
                     type="button"
-                    class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
                 >
                     <Plus class="h-4 w-4" />
                 </Button>
@@ -76,17 +83,29 @@ const deleteOption = (optIndex: number) =>
                     <Label for="question-type-{{ question.id ?? index }}">
                         Question type
                     </Label>
-                    <select
+                    <Select
                         id="question-type-{{ question.id ?? index }}"
                         v-model="question.type"
-                        @change="updateQuestion(question)"
-                        class="rounded-md border border-gray-300 p-2"
+                        @update:model-value="updateQuestion(question)"
                     >
-                        <option disabled value="">Select question type</option>
-                        <option value="text">Short answer</option>
-                        <option value="select">Multiple choice</option>
-                        <option value="radio">One choice</option>
-                    </select>
+                        <SelectTrigger class="!w-full">
+                            <SelectValue placeholder="Select a Question Type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Types</SelectLabel>
+                                <SelectItem value="text">
+                                    Short answer
+                                </SelectItem>
+                                <SelectItem value="select">
+                                    Multiple choice
+                                </SelectItem>
+                                <SelectItem value="radio">
+                                    One choice
+                                </SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-4">
@@ -116,7 +135,6 @@ const deleteOption = (optIndex: number) =>
                             size="sm"
                             variant="outline"
                             type="button"
-                            class="mt-2"
                             @click="addOption()"
                         >
                             <Plus class="h-4 w-4" />
@@ -143,9 +161,8 @@ const deleteOption = (optIndex: number) =>
                                 />
                                 <Button
                                     size="sm"
-                                    variant="ghost"
+                                    variant="outline"
                                     type="button"
-                                    class="rounded-full bg-white p-2 shadow-md transition-colors duration-200 hover:bg-gray-100"
                                     @click="deleteOption(dex)"
                                 >
                                     <Trash class="h-4 w-4" />

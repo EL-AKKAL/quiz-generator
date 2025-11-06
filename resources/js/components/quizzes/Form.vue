@@ -63,33 +63,34 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
                 <Input id="picture" name="picture" type="file" />
             </div>
         </div>
-        <div class="grid gap-2">
-            <Label for="title">Quiz title</Label>
-            <Input
-                id="title"
-                class="mt-1 block w-full"
-                name="title"
-                :default-value="quiz.title"
-                required
-                autocomplete="name"
-                placeholder="Enter quiz title"
-            />
-            <InputError class="mt-2" :message="errors.title" />
+        <div class="col-span-2 grid grid-cols-2 gap-2">
+            <div class="grid gap-2">
+                <Label for="title">Quiz title</Label>
+                <Input
+                    id="title"
+                    class="mt-1 block w-full"
+                    name="title"
+                    :default-value="quiz.title"
+                    required
+                    autocomplete="name"
+                    placeholder="Enter quiz title"
+                />
+                <InputError class="mt-2" :message="errors.title" />
+            </div>
+            <div class="grid gap-2">
+                <Label for="expire_date">Expiration Date</Label>
+                <Input
+                    id="expire_date"
+                    class="mt-1 block w-full"
+                    name="expire_date"
+                    type="date"
+                    :default-value="formatDate(quiz.expire_date)"
+                    autocomplete="expire_date"
+                    placeholder="Enter expiration date"
+                />
+                <InputError class="mt-2" :message="errors.expire_date" />
+            </div>
         </div>
-        <div class="grid gap-2">
-            <Label for="slug">Slug</Label>
-            <Input
-                id="slug"
-                class="mt-1 block w-full"
-                name="slug"
-                :default-value="quiz.slug ?? ''"
-                required
-                autocomplete="slug"
-                placeholder="Enter quiz slug"
-            />
-            <InputError class="mt-2" :message="errors.slug" />
-        </div>
-
         <div class="col-span-2 grid gap-2">
             <Label for="description">Description</Label>
             <Textarea
@@ -103,20 +104,6 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
             />
 
             <InputError class="mt-2" :message="errors.description" />
-        </div>
-
-        <div class="col-span-2 grid gap-2">
-            <Label for="expire_date">Expiration Date</Label>
-            <Input
-                id="expire_date"
-                class="mt-1 block w-full"
-                name="expire_date"
-                type="date"
-                :default-value="formatDate(quiz.expire_date)"
-                autocomplete="expire_date"
-                placeholder="Enter expiration date"
-            />
-            <InputError class="mt-2" :message="errors.expire_date" />
         </div>
 
         <div class="col-span-2 flex items-end justify-start gap-2">

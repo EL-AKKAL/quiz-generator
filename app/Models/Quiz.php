@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
+
 class Quiz extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     protected $fillable = [
         'title',
@@ -16,6 +19,13 @@ class Quiz extends Model
         'slug',
         'picture',
     ];
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
+    }
 
     public function questions()
     {

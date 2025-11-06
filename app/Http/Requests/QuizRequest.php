@@ -30,7 +30,6 @@ class QuizRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
             'description' => 'nullable|string',
             'expire_date' => 'nullable|date',
             'status' => 'nullable',

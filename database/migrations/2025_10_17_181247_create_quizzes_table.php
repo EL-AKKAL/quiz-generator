@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreignIdFor(App\Models\User::class, 'user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('slug')->nullable()->unique();
+            $table->text('slug')->nullable();
             $table->tinyInteger('status');
             $table->timestamp('expire_date')->nullable();
             $table->string('picture')->nullable();

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->foreignIdFor(Quiz::class, 'quiz_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

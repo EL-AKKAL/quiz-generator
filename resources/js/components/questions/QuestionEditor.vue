@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import Empty from '@/components/Empty.vue';
+import Button from '@/components/ui/button/Button.vue';
+import Input from '@/components/ui/input/Input.vue';
+import Label from '@/components/ui/label/Label.vue';
 import {
     Select,
     SelectContent,
@@ -9,13 +12,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { Question } from '@/types';
 import { Plus, Trash } from 'lucide-vue-next';
-import Button from './ui/button/Button.vue';
-import Input from './ui/input/Input.vue';
-import Label from './ui/label/Label.vue';
-import { Separator } from './ui/separator';
-import Textarea from './ui/textarea/Textarea.vue';
 
 const props = defineProps<{
     question: Question;
@@ -26,7 +26,9 @@ const props = defineProps<{
 }>();
 
 const shouldHaveOptions = () =>
-    props.question.type === 'select' || props.question.type === 'radio';
+    props.question.type === 'select' ||
+    props.question.type === 'radio' ||
+    props.question.type === 'checkbox';
 
 const addOption = () => {
     if (!props.question.data) props.question.data = { options: [] };
@@ -98,10 +100,13 @@ const deleteOption = (optIndex: number) =>
                                     Short answer
                                 </SelectItem>
                                 <SelectItem value="select">
-                                    Multiple choice
+                                    Select choice
                                 </SelectItem>
                                 <SelectItem value="radio">
-                                    One choice
+                                    Radio choice
+                                </SelectItem>
+                                <SelectItem value="checkbox">
+                                    Multiple choice
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>

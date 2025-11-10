@@ -37,7 +37,7 @@ class QuizRequest extends FormRequest
             'questions' => 'nullable|array',
             'questions.*.id' => 'required|integer',
             'questions.*.question' => 'required|string|max:255',
-            'questions.*.type' => 'required|string|in:text,select,radio',
+            'questions.*.type' => 'required|string|in:text,select,radio,checkbox',
             'questions.*.data' => 'nullable|array',
             'questions.*.data.options' => 'nullable|array',
             'questions.*.data.options.*.id' => 'nullable|integer',

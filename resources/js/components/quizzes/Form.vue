@@ -3,7 +3,7 @@ import QuizController from '@/actions/App/Http/Controllers/QuizController';
 import Empty from '@/components/Empty.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
-import QuestionEditor from '@/components/QuestionEditor.vue';
+import QuestionEditor from '@/components/questions/QuestionEditor.vue';
 import QuizPicture from '@/components/quizzes/ui/QuizPicture.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Input from '@/components/ui/input/Input.vue';

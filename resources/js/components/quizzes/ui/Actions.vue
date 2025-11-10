@@ -19,7 +19,7 @@ defineProps<{ id: number; slug: string }>();
         <a
             class="flex size-8 items-center justify-center rounded-full bg-background shadow-md"
             target="_blank"
-            :href="`/view/quiz/${slug}`"
+            :href="QuizController.view.url({ slug })"
         >
             <SquareArrowOutUpRight class="!h-3.5" />
         </a>

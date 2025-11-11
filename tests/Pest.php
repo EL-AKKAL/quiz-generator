@@ -11,6 +11,10 @@
 |
 */
 
+use App\Models\User;
+use Illuminate\Testing\TestResponse;
+use function Pest\Laravel\{post};
+
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
@@ -41,7 +45,38 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Create a new user for testing.
+ *
+ * @param  array  $attributes = []
+ * @param  bool  $withTwoFactor = false
+ * @return \App\Models\User
+ */
+function createUser(array $attributes = [], bool $withTwoFactor = false): User
 {
-    // ..
+
+    if ($withTwoFactor)
+        return User::factory()->create(array_merge([
+            'two_factor_secret' => encrypt('test-secret'),
+            'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
+            'two_factor_confirmed_at' => now(),
+        ], $attributes));
+
+
+    return User::factory()->withoutTwoFactor()->create($attributes);
+}
+
+/**
+ * login as the given user.
+ *
+ * @param  User  $user
+ * @param  array  $overrides
+ * @return \Illuminate\Testing\TestResponse
+ */
+function loginAs(User $user, array $overrides = []): TestResponse
+{
+    return post(route('login.store'), array_merge([
+        'email' => $user->email,
+        'password' => 'password',
+    ], $overrides));
 }

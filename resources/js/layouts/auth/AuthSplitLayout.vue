@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import AppLogo from '@/components/AppLogo.vue';
+import DemoUser from '@/components/DemoUser.vue';
+import GithubLink from '@/components/GithubLink.vue';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
-import { usePage } from '@inertiajs/vue3';
 import AuthBackground from './AuthBackground.vue';
-
-const page = usePage();
-const quote = page.props.quote;
 
 defineProps<{
     title?: string;
@@ -23,17 +21,12 @@ defineProps<{
             <AuthBackground />
             <div class="flex w-full items-center justify-between">
                 <AppLogo />
-                <ThemeSwitcher />
+                <div class="flex items-center justify-between gap-2">
+                    <GithubLink />
+                    <ThemeSwitcher />
+                </div>
             </div>
-            <div v-if="quote" class="relative z-20 mt-auto">
-                <blockquote class="space-y-2">
-                    <p class="!z-50 text-lg">
-                        &ldquo;Use demo user if you dont have an account&rdquo;
-                    </p>
-                    <footer class="text-sm">email: test@example.com</footer>
-                    <footer class="text-sm">password: password</footer>
-                </blockquote>
-            </div>
+            <DemoUser />
         </div>
         <div class="lg:p-8">
             <div
@@ -46,6 +39,7 @@ defineProps<{
                     <p class="text-sm text-muted-foreground" v-if="description">
                         {{ description }}
                     </p>
+                    <DemoUser class="block lg:hidden" />
                 </div>
                 <slot />
             </div>

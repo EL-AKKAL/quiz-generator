@@ -16,7 +16,11 @@ const { appearance, updateAppearance } = useAppearance();
 <template>
     <DropdownMenu>
         <DropdownMenuTrigger as-child>
-            <Button size="icon" class="!z-50 h-8 w-8 rounded-full">
+            <Button
+                size="icon"
+                variant="outline"
+                class="!z-50 h-8 w-8 rounded-full !text-primary"
+            >
                 <Sun
                     class="h-4 w-4 scale-100 rotate-0 transition-all duration-300 dark:scale-0"
                 />

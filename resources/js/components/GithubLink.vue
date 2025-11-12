@@ -8,7 +8,8 @@ import { Github } from 'lucide-vue-next';
         as="a"
         href="https://github.com/EL-AKKAL/quiz-generator"
         target="_blank"
-        class="!z-50 h-8 w-8 rounded-full"
+        class="!z-50 h-8 w-8 rounded-full !text-primary"
+        variant="outline"
     >
         <Github />
     </Button>

@@ -16,30 +16,33 @@ defineProps<{ id: number; slug: string }>();
 </script>
 <template>
     <div class="absolute top-2 right-2 flex space-x-2">
-        <a
-            class="flex size-8 items-center justify-center rounded-full bg-background shadow-md"
+        <Button
+            as="a"
+            class="size-8 rounded-full text-primary"
+            variant="outline"
             target="_blank"
             :href="QuizController.view.url({ slug })"
         >
-            <SquareArrowOutUpRight class="!h-3.5" />
-        </a>
+            <SquareArrowOutUpRight class="size-4 scale-100" />
+        </Button>
         <Button
             :as="Link"
             size="sm"
-            class="flex size-8 items-center justify-center rounded-full text-primary-foreground shadow-md"
+            variant="outline"
+            class="size-8 rounded-full text-primary"
             :href="QuizController.edit.url({ quiz: id })"
         >
-            <FilePenLine class="!h-3.5" />
+            <FilePenLine class="size-4 scale-100" />
         </Button>
 
         <Dialog>
             <DialogTrigger as-child>
                 <Button
-                    variant="destructive"
-                    class="flex size-8 items-center justify-center rounded-full text-primary-foreground shadow-md"
+                    variant="outline"
+                    class="size-8 rounded-full text-destructive"
                     data-test="delete-quiz-button"
                 >
-                    <Trash class="!h-3.5" />
+                    <Trash class="size-4 scale-100" />
                 </Button>
             </DialogTrigger>
             <DialogContent>
@@ -56,7 +59,7 @@ defineProps<{ id: number; slug: string }>();
                         <DialogTitle>
                             Are you sure you want to delete this quiz?
                         </DialogTitle>
-                        <DialogDescription>
+                        <DialogDescription class="text-xs">
                             Once your quiz is deleted, all of its resources and
                             data will also be permanently deleted. Please
                             confirm you would like to permanently delete your
@@ -67,9 +70,8 @@ defineProps<{ id: number; slug: string }>();
                     <DialogFooter class="grid grid-cols-2 gap-2">
                         <DialogClose as-child>
                             <Button
-                                variant="secondary"
+                                variant="outline"
                                 size="sm"
-                                class="w-full"
                                 @click="
                                     () => {
                                         clearErrors();
@@ -84,7 +86,6 @@ defineProps<{ id: number; slug: string }>();
                         <Button
                             type="submit"
                             size="sm"
-                            class="w-full"
                             variant="destructive"
                             :disabled="processing"
                             data-test="confirm-delete-quiz-button"

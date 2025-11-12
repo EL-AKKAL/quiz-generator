@@ -10,7 +10,7 @@ import {
 import { useAppearance } from '@/composables/useAppearance';
 import { Moon, Sun } from 'lucide-vue-next';
 
-const { appearance, updateAppearance } = useAppearance();
+const { isDark, updateAppearance } = useAppearance();
 </script>
 
 <template>
@@ -32,16 +32,14 @@ const { appearance, updateAppearance } = useAppearance();
         <DropdownMenuContent align="end">
             <DropdownMenuItem
                 @click="updateAppearance('light')"
-                :class="{
-                    'bg-primary/70': appearance === 'light',
-                }"
+                :class="{ 'bg-primary/70': !isDark }"
             >
                 Light
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
                 @click="updateAppearance('dark')"
-                :class="{ 'bg-btn': appearance === 'dark' }"
+                :class="{ 'bg-btn': isDark }"
             >
                 Dark
             </DropdownMenuItem>

@@ -21,6 +21,7 @@ defineProps<{ data: Paginator<any> }>();
             :items-per-page="data.per_page"
             :total="data.total"
             :default-page="data.current_page"
+            v-if="data.total > data.per_page"
         >
             <PaginationContent v-slot="{ items }">
                 <PaginationFirst

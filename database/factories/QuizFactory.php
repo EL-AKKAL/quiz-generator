@@ -12,7 +12,6 @@ class QuizFactory extends Factory
             "user_id" => \App\Models\User::inRandomOrder()->value('id'),
             "title" => $this->faker->sentence(),
             "description" => $this->faker->paragraph(3),
-            "slug" => $this->faker->slug(),
             "status" => $this->faker->boolean(),
             "expire_date" => $this->faker->dateTimeBetween('now', '+1 year'),
         ];

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import InputError from '@/components/InputError.vue';
+import AppVersion from '@/components/shared/AppVersion.vue';
+import AppVersionUpdatedAt from '@/components/shared/AppVersionUpdatedAt.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -102,6 +104,14 @@ defineProps<{
             <div class="text-center text-sm text-muted-foreground">
                 Don't have an account?
                 <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+            </div>
+
+            <div class="text-center text-xs">
+                <div>Current Version : <AppVersion /></div>
+                <div>
+                    Last Updated :
+                    <AppVersionUpdatedAt />
+                </div>
             </div>
         </Form>
     </AuthBase>

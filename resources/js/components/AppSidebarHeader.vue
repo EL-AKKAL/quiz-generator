@@ -4,6 +4,7 @@ import GithubLink from '@/components/GithubLink.vue';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import type { BreadcrumbItemType } from '@/types';
+import AppVersion from './shared/AppVersion.vue';
 
 withDefaults(
     defineProps<{
@@ -25,7 +26,8 @@ withDefaults(
                 <Breadcrumbs :breadcrumbs="breadcrumbs" />
             </template>
         </div>
-        <div class="flex gap-2">
+        <div class="flex items-center justify-center gap-2">
+            <AppVersion />
             <GithubLink />
             <ThemeSwitcher />
         </div>

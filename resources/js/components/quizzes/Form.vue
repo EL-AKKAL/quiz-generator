@@ -51,7 +51,7 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
     <Form
         :key="quiz.id"
         v-bind="formConfig"
-        class="grid w-full max-w-3xl gap-4 !p-5 pt-0 md:grid-cols-1 lg:grid-cols-2"
+        class="grid w-full max-w-3xl gap-4 !py-5 pt-0 md:grid-cols-1 lg:grid-cols-2"
         v-slot="{ errors, processing }"
         @success="() => toast.success('Quiz saved successfully! 🎉')"
         @error="() => toast.error('Failed to save quiz. Please try again.')"

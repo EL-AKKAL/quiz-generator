@@ -9,10 +9,20 @@ import DialogFooter from '@/components/ui/dialog/DialogFooter.vue';
 import DialogHeader from '@/components/ui/dialog/DialogHeader.vue';
 import DialogTitle from '@/components/ui/dialog/DialogTitle.vue';
 import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue';
+import Tooltip from '@/components/ui/tooltip/Tooltip.vue';
+import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue';
+import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
+import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { Form, Link } from '@inertiajs/vue3';
-import { FilePenLine, SquareArrowOutUpRight, Trash } from 'lucide-vue-next';
+import {
+    Archive,
+    BadgeCheck,
+    FilePenLine,
+    SquareArrowOutUpRight,
+    Trash,
+} from 'lucide-vue-next';
 
-defineProps<{ id: number; slug: string }>();
+defineProps<{ id: number; slug: string; status: boolean }>();
 </script>
 <template>
     <div class="absolute top-2 right-2 flex space-x-2">
@@ -96,5 +106,27 @@ defineProps<{ id: number; slug: string }>();
                 </Form>
             </DialogContent>
         </Dialog>
+        <TooltipProvider>
+            <Tooltip>
+                <TooltipTrigger as-child>
+                    <Button
+                        class="size-8 rounded-full text-primary"
+                        variant="outline"
+                    >
+                        <Archive
+                            class="size-4 scale-100 !text-destructive"
+                            v-if="!status"
+                        />
+                        <BadgeCheck
+                            class="size-4 scale-100 text-green-500"
+                            v-else
+                        />
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>Status : {{ status ? 'Active' : 'Draft' }}</p>
+                </TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
     </div>
 </template>

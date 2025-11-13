@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import QuizPicture from '@/components/quizzes/ui/QuizPicture.vue';
-import Badge from '@/components/ui/badge/Badge.vue';
 import { formatDate } from '@/lib/utils';
 import type { IQuiz } from '@/types';
 import { computed, defineProps } from 'vue';
@@ -29,7 +28,11 @@ const activeStatus = computed(() =>
                     :picture="quiz.picture"
                     :title="quiz.title"
                 />
-                <Actions :id="quiz.id" :slug="quiz.slug" />
+                <Actions
+                    :id="quiz.id"
+                    :slug="quiz.slug"
+                    :status="quiz.status"
+                />
             </div>
             <div class="p-4">
                 <div class="mb-2 flex items-start justify-between">
@@ -44,9 +47,6 @@ const activeStatus = computed(() =>
                         <p class="text-sm font-medium text-foreground">
                             {{ quiz.questions_count }} Questions
                         </p>
-                        <Badge :class="activeClass">
-                            {{ activeStatus }}
-                        </Badge>
                     </div>
 
                     <p

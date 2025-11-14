@@ -24,6 +24,9 @@ export type AppPageProps<
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;
+    appVersion: string;
+    lastUpdated:string;
+    questionTypes: Array<string>;
 };
 
 export interface User {

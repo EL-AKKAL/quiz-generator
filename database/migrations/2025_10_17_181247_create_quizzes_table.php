@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('slug')->nullable();
-            $table->tinyInteger('status');
+            $table->boolean('status');
             $table->timestamp('expire_date')->nullable();
             $table->string('picture')->nullable();
             $table->timestamps();

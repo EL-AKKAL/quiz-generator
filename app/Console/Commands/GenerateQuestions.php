@@ -63,7 +63,7 @@ class GenerateQuestions extends Command
             'quiz_id' => $quizID,
             'question' => "Question for quiz $quizID: " . Str::random(10),
             'type' => $type->value,
-            'data' => $this->generateQuestionData($type),
+            'data' => json_encode($this->generateQuestionData($type)),
             'created_at' => $time,
             'updated_at' => $time,
         ];

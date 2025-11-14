@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class CreateQuizzesForUser extends Command
+class GenerateQuizzes extends Command
 {
-    protected $signature = 'app:create-quizzes-for-user {userID?} {count?}';
+    protected $signature = 'app:generate-quizzes {userID?} {count?}';
 
     protected $description = 'create quizzes for a given user.';
 
     public function handle()
     {
-        try{
+        try {
             $userID = $this->argument('userID') ?? $this->ask('Enter user ID (default is 1)', '1');
             $count = $this->argument('count') ?? $this->ask('How many quizzes to create ? (default is 10)', '10');
 
             $user = \App\Models\User::find((int) $userID);
 
-            if(!$user){
+            if (!$user) {
                 $this->error("User with ID {$userID} doesn't exist");
                 return 1;
             }
@@ -39,7 +39,7 @@ class CreateQuizzesForUser extends Command
             $this->info('creating quizzes completed successfully.');
 
             return self::SUCCESS;
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             $this->error('Error creating quizzes: ' . $e->getMessage());
             return self::FAILURE;

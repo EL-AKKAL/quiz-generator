@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\QuestionType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -19,6 +20,7 @@ class Question extends Model
 
     protected $casts = [
         'data' => 'array',
+        'type' => QuestionType::class,
     ];
 
     public function quiz()

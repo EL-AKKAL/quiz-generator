@@ -20,6 +20,10 @@ class Quiz extends Model
         'picture',
     ];
 
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

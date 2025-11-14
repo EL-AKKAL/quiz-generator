@@ -2,20 +2,10 @@
 import QuizPicture from '@/components/quizzes/ui/QuizPicture.vue';
 import { formatDate } from '@/lib/utils';
 import type { IQuiz } from '@/types';
-import { computed, defineProps } from 'vue';
+import { defineProps } from 'vue';
 import Actions from './ui/Actions.vue';
 
-const props = defineProps<{ quiz: IQuiz }>();
-
-const activeClass = computed(() =>
-    props.quiz.status
-        ? 'bg-chart-2 text-destructive-foreground'
-        : 'bg-destructive text-destructive-foreground',
-);
-
-const activeStatus = computed(() =>
-    props.quiz.status ? 'Active' : 'Inactive',
-);
+defineProps<{ quiz: IQuiz }>();
 </script>
 <template>
     <div>

@@ -24,7 +24,7 @@ class QuizController extends Controller
     public function create()
     {
         return inertia('Quizzes/Edit', [
-            'quiz' => new \App\Models\Quiz(),
+            'quiz' => new Quiz(),
         ]);
     }
 

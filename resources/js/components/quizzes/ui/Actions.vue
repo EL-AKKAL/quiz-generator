@@ -21,8 +21,11 @@ import {
     SquareArrowOutUpRight,
     Trash,
 } from 'lucide-vue-next';
+import { computed } from 'vue';
 
-defineProps<{ id: number; slug: string; status: boolean }>();
+const props = defineProps<{ id: number; slug: string; status: boolean }>();
+
+const isPublished = computed(() => (props.status ? 'Published' : 'Draft'));
 </script>
 <template>
     <div class="absolute top-2 right-2 flex space-x-2">
@@ -113,18 +116,18 @@ defineProps<{ id: number; slug: string; status: boolean }>();
                         class="size-8 rounded-full text-primary"
                         variant="outline"
                     >
-                        <Archive
-                            class="size-4 scale-100 !text-destructive"
-                            v-if="!status"
-                        />
                         <BadgeCheck
                             class="size-4 scale-100 text-green-500"
+                            v-if="status"
+                        />
+                        <Archive
+                            class="size-4 scale-100 !text-destructive"
                             v-else
                         />
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Status : {{ status ? 'Active' : 'Draft' }}</p>
+                    <p>Status : {{ isPublished }}</p>
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>

@@ -108,13 +108,17 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
 
         <div class="col-span-2 flex items-end justify-start gap-2">
             <Switch
-                :value="quiz.status ? 'on' : 'off'"
+                :model-value="Boolean(quiz.status)"
                 id="status"
                 name="status"
-                :model-value="quiz.status"
+                @update:model-value="
+                    (v) => {
+                        quiz.status = v;
+                    }
+                "
             />
+            <input type="hidden" name="status" :value="quiz.status" />
             <Label for="status">Active Status</Label>
-
             <InputError class="mt-2" :message="errors.status" />
         </div>
 

@@ -96,17 +96,13 @@ const deleteOption = (optIndex: number) =>
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Types</SelectLabel>
-                                <SelectItem value="text">
-                                    Short answer
-                                </SelectItem>
-                                <SelectItem value="select">
-                                    Select choice
-                                </SelectItem>
-                                <SelectItem value="radio">
-                                    Radio choice
-                                </SelectItem>
-                                <SelectItem value="checkbox">
-                                    Multiple choice
+                                <SelectItem
+                                    v-for="optionType in $page.props
+                                        .questionTypes"
+                                    :value="optionType"
+                                    :key="optionType"
+                                >
+                                    {{ optionType }}
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>

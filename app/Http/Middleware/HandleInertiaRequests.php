@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\QuestionType;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -48,6 +49,7 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'appVersion' => app_version(),
             'lastUpdated' => app_version_last_updated(),
+            'questionTypes' => QuestionType::all(),
         ];
     }
 }

@@ -9,10 +9,12 @@ import {
 } from '@/components/ui/pagination';
 import { Paginator } from '@/types';
 import { Link } from '@inertiajs/vue3';
+import { markRaw } from 'vue';
 import PaginationFirst from '../ui/pagination/PaginationFirst.vue';
 import PaginationLast from '../ui/pagination/PaginationLast.vue';
 
 defineProps<{ data: Paginator<any> }>();
+const RawLink = markRaw(Link);
 </script>
 <template>
     <div class="mb-4">
@@ -29,14 +31,14 @@ defineProps<{ data: Paginator<any> }>();
                         'pointer-events-none opacity-50':
                             data.current_page === 1,
                     }"
-                    :as="Link"
+                    :as="RawLink"
                     :href="data.first_page_url || undefined"
                 />
                 <PaginationPrevious
                     :class="{
                         'pointer-events-none opacity-50': !data.prev_page_url,
                     }"
-                    :as="Link"
+                    :as="RawLink"
                     :href="data.prev_page_url || undefined"
                 />
 
@@ -45,7 +47,7 @@ defineProps<{ data: Paginator<any> }>();
                         v-if="item.type === 'page'"
                         :value="item.value"
                         :is-active="item.value === page"
-                        :as="Link"
+                        :as="RawLink"
                         :href="`?page=${item.value}`"
                     >
                         {{ item.value }}
@@ -58,7 +60,7 @@ defineProps<{ data: Paginator<any> }>();
                     :class="{
                         'pointer-events-none opacity-50': !data.next_page_url,
                     }"
-                    :as="Link"
+                    :as="RawLink"
                     :href="data.next_page_url || undefined"
                 />
                 <PaginationLast
@@ -66,7 +68,7 @@ defineProps<{ data: Paginator<any> }>();
                         'pointer-events-none opacity-50':
                             data.current_page === data.last_page,
                     }"
-                    :as="Link"
+                    :as="RawLink"
                     :href="data.last_page_url || undefined"
                 />
             </PaginationContent>

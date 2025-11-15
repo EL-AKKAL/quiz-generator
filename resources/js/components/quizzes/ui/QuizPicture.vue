@@ -10,14 +10,16 @@ const props = defineProps<{
 }>();
 
 const computedPicture = computed(() =>
-    props.picture
-        ? `/storage/${props.picture}`
-        : 'https://github.com/unovue.png',
+    props.picture ? `/storage/${props.picture}` : '/default-quiz.png',
 );
 </script>
 <template>
     <Avatar class="h-20 w-20">
-        <AvatarImage :src="computedPicture" :alt="title ?? ''" />
+        <AvatarImage
+            :src="computedPicture"
+            :alt="title ?? ''"
+            :class="!picture ? 'scale-50' : ''"
+        />
         <AvatarFallback>Not found</AvatarFallback>
     </Avatar>
 </template>

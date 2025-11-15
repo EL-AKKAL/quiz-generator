@@ -4,7 +4,10 @@ import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue';
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue';
 import { computed } from 'vue';
 
-const props = defineProps<{ picture: string | undefined; title: string }>();
+const props = defineProps<{
+    picture: string | undefined;
+    title: string | undefined;
+}>();
 
 const computedPicture = computed(() =>
     props.picture
@@ -14,7 +17,7 @@ const computedPicture = computed(() =>
 </script>
 <template>
     <Avatar class="h-20 w-20">
-        <AvatarImage :src="computedPicture" :alt="title" />
+        <AvatarImage :src="computedPicture" :alt="title ?? ''" />
         <AvatarFallback>Not found</AvatarFallback>
     </Avatar>
 </template>

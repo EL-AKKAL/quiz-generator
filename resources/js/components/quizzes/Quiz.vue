@@ -2,7 +2,6 @@
 import QuizPicture from '@/components/quizzes/ui/QuizPicture.vue';
 import { formatDate } from '@/lib/utils';
 import type { IQuiz } from '@/types';
-import { defineProps } from 'vue';
 import Actions from './ui/Actions.vue';
 
 defineProps<{ quiz: IQuiz }>();

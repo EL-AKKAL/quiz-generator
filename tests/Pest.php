@@ -11,9 +11,12 @@
 |
 */
 
+use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Testing\TestResponse;
-use function Pest\Laravel\{post};
+use function Pest\Laravel\{actingAs, post};
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
@@ -66,6 +69,12 @@ function createUser(array $attributes = [], bool $withTwoFactor = false): User
     return User::factory()->withoutTwoFactor()->create($attributes);
 }
 
+function actingUser(?User $user = null): User
+{
+    $user ??= createUser();
+    actingAs($user);
+    return $user;
+}
 /**
  * login as the given user.
  *
@@ -104,4 +113,40 @@ function quizPayload(array $override = []): array
             ],
         ],
     ], $override);
+}
+
+/**
+ * Creates a quiz for a user with optional override payload.
+ * @param  User  $user
+ * @param  array  $overrides
+ * @return Quiz
+ */
+
+function createQuiz(User $user, array $override = []): Quiz
+{
+    actingAs($user);
+
+    $payload = quizPayload($override);
+
+    post(route('quizzes.store'), $payload)
+        ->assertRedirect()
+        ->assertSessionHasNoErrors();
+
+    return Quiz::latest()->first();
+}
+
+/**
+ * Fake file for quiz pictures.
+ */
+function fakePicture(string $name = 'quiz.png'): UploadedFile
+{
+    return UploadedFile::fake()->create($name, 100);
+}
+
+/**
+ * Simplify storage fake + asserting.
+ */
+function fakeStorage(): void
+{
+    Storage::fake('public');
 }

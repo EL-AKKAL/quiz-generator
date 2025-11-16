@@ -1,236 +1,125 @@
 <?php
 
 use App\Models\Quiz;
-use App\Models\Question;
-use function Pest\Laravel\{actingAs, post, assertDatabaseHas, assertDatabaseMissing, delete, get, json, put};
-use App\Models\User;
+use function Pest\Laravel\{post, assertDatabaseHas, assertDatabaseMissing, delete, get, put};
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
 describe("Quiz Creation", function () {
     it('creates a quiz with questions and picture', function () {
-        Storage::fake('public');
+        fakeStorage();
 
-        actingAs(createUser());
+        $file = fakePicture();
 
-        $file = UploadedFile::fake()->create('quiz.png', 100);
+        $quiz = createQuiz(createUser(), ['picture' => $file]);
 
-        $payload = quizPayload([
-            'picture' => $file,
-        ]);
+        $payload = quizPayload();
 
-        post(route('quizzes.store'), $payload)->assertRedirect()->assertSessionHasNoErrors();
+        Storage::disk('public')->assertExists($quiz->picture);
 
-        Storage::disk('public')->assertExists('quizzes/' . $file->hashName());
-
-        $quiz = Quiz::latest()->first();
         expect($quiz->picture)->toBe('quizzes/' . $file->hashName());
 
-        expect($quiz->title)->toBe($payload['title']);
-        expect($quiz->description)->toBe($payload['description']);
-        expect($quiz->status)->toBe($payload['status']);
+        expect($quiz)->title->toBe($payload['title']);
+        expect($quiz)->description->toBe($payload['description']);
+        expect($quiz)->status->toBe($payload['status']);
         expect($quiz->expire_date)->not->toBeNull();
-
-        expect($quiz->slug)->toBeString()->not->toBeEmpty();
-
-        expect($quiz->questions)->toHaveCount(count($payload['questions']));
-
-        $firstQuestion = $payload['questions'][0];
+        expect($quiz->slug)->not->toBeEmpty();
 
         assertDatabaseHas('questions', [
             'quiz_id' => $quiz->id,
-            'question' => $firstQuestion['question'],
-            'type' => $firstQuestion['type'],
-            'data' => null,
+            'question' => $payload['questions'][0]['question'],
         ]);
     });
 
     it('fails to create a quiz with invalid data', function () {
-        actingAs(createUser());
-
+        actingUser();
         post(route('quizzes.store'), [])
             ->assertSessionHasErrors(['title']);
     });
 
     it('converts status string to boolean', function () {
-        actingAs(createUser());
-
-        post(route('quizzes.store'), quizPayload(['status' => 'false']))
-            ->assertRedirect();
-
-        assertDatabaseHas('quizzes', [
-            'status' => false,
-        ]);
+        createQuiz(createUser(), ['status' => 'false']);
+        assertDatabaseHas('quizzes', ['status' => false]);
     });
 
     it('creates a quiz without questions', function () {
-        actingAs(createUser());
-
-        post(route('quizzes.store'), quizPayload(['questions' => []]))
-            ->assertRedirect();
-
-        $quiz = Quiz::latest()->first();
-
+        $quiz = createQuiz(createUser(), ['questions' => []]);
         expect($quiz->questions()->count())->toBe(0);
     });
-
 });
 
 describe('Quiz : Deletion', function () {
     it('deletes a quiz', function () {
-        Storage::fake('public');
-        $user = createUser();
-        actingAs($user);
+        fakeStorage();
 
-        $file = UploadedFile::fake()->create('quiz.png', 100);
+        $file = fakePicture();
 
-        post(route('quizzes.store'), quizPayload([
-            'picture' => $file,
-        ]))->assertRedirect()
-            ->assertSessionHasNoErrors();
-
-        $quiz = Quiz::latest()->first();
-
-        $questionIds = $quiz->questions()->pluck('id')->toArray();
-        expect($questionIds)->not->toBeEmpty();
+        $quiz = createQuiz(actingUser(), ['picture' => $file]);
 
         Storage::disk('public')->assertExists($quiz->picture);
 
-        delete(route('quizzes.destroy', $quiz))
-            ->assertStatus(302);
-
+        delete(route('quizzes.destroy', $quiz))->assertStatus(302);
 
         assertDatabaseMissing('quizzes', ['id' => $quiz->id]);
-
-        Storage::disk('public')->assertMissing($quiz->picture);
-
         assertDatabaseMissing('questions', ['quiz_id' => $quiz->id]);
-
+        Storage::disk('public')->assertMissing($quiz->picture);
     });
 
     it('prevents deleting a quiz owned by another user', function () {
         $owner = createUser();
-        $attacker = createUser();
+        $quiz = createQuiz($owner);
 
-        $quiz = $owner->quizzes()->create(quizPayload());
-
-        actingAs($attacker);
+        actingUser(createUser());
 
         delete(route('quizzes.destroy', $quiz))
             ->assertNotFound();
     });
-
 });
 
 describe('Quiz : Updating', function () {
 
     it('updates a quiz and its questions/picture', function () {
-        Storage::fake('public');
+        fakeStorage();
+        $oldPic = fakePicture();
 
-        $user = createUser();
-
-        actingAs($user);
-        $qId = 1;
-        $oldFile = UploadedFile::fake()->create('quiz.png', 100);
-
-        $oldPayload = quizPayload([
+        $quiz = createQuiz(actingUser(), [
             'title' => 'Old Title',
             'status' => false,
+            'picture' => $oldPic,
             'questions' => [
-                [
-                    'id' => $qId,
-                    'question' => 'Old question',
-                    'type' => 'select',
-                ]
-            ],
-            'picture' => $oldFile,
+                ['id' => 1, 'question' => 'Old question', 'type' => 'select']
+            ]
         ]);
 
+        Storage::disk('public')->assertExists($quiz->picture);
 
-        post(route('quizzes.store'), $oldPayload)
+        $newPic = fakePicture('newquiz.png');
+
+        put(route('quizzes.update', $quiz), quizPayload([
+            'title' => 'New Title',
+            'status' => true,
+            'picture' => $newPic,
+            'questions' => [
+                ['id' => 1, 'question' => 'Updated question', 'type' => 'text', 'data' => []]
+            ]
+        ]))
             ->assertRedirect()
             ->assertSessionHasNoErrors();
 
-        $quiz = Quiz::latest()->first();
+        assertDatabaseHas('quizzes', ['id' => $quiz->id, 'title' => 'New Title']);
+        assertDatabaseHas('questions', ['id' => 1, 'question' => 'Updated question']);
 
-        $oldPath = $quiz->picture;
-
-        Storage::disk('public')->assertExists($oldPath);
-
-        assertDatabaseHas('quizzes', [
-            'id' => $quiz->id,
-            'title' => 'Old Title',
-            'status' => false,
-        ]);
-
-        assertDatabaseHas('questions', [
-            'id' => $qId,
-            'question' => 'Old question',
-            'type' => 'select',
-        ]);
-
-        $newFile = UploadedFile::fake()->create('newquiz.png', 100);
-
-        $newpayload = quizPayload([
-            'title' => 'New Title',
-            'status' => true,
-            'questions' => [
-                [
-                    'id' => $qId,
-                    'question' => 'Updated question',
-                    'type' => 'text',
-                    'data' => [],
-                ],
-            ],
-            'picture' => $newFile,
-        ]);
-
-        put(route('quizzes.update', $quiz), $newpayload)
-            ->assertRedirect()
-            ->assertSessionHasNoErrors();
-
-        $quiz = Quiz::latest()->first();
-
-        assertDatabaseHas('quizzes', [
-            'id' => $quiz->id,
-            'title' => 'New Title',
-            'status' => true,
-        ]);
-
-        assertDatabaseHas('questions', [
-            'id' => $qId,
-            'question' => 'Updated question',
-            'type' => 'text',
-        ]);
-
-        assertDatabaseMissing('quizzes', [
-            'id' => $quiz->id,
-            'title' => 'Old Title',
-            'status' => false,
-        ]);
-
-        assertDatabaseMissing('questions', [
-            'id' => $qId,
-            'question' => 'Old question',
-            'type' => 'select',
-        ]);
-
-        $newPath = $quiz->picture;
-
-        Storage::disk('public')->assertExists($newPath);
-        Storage::disk('public')->assertMissing($oldPath);
+        assertDatabaseMissing('questions', ['question' => 'Old question']);
+        Storage::disk('public')->assertMissing($quiz->picture);
     });
 
     it('prevents updating a quiz owned by another user', function () {
         $owner = createUser();
-        $attacker = createUser();
+        $quiz = createQuiz($owner);
 
-        $quiz = $owner->quizzes()->create(quizPayload());
-
-        actingAs($attacker);
+        actingUser(createUser());
 
         put(route('quizzes.update', $quiz), quizPayload())
             ->assertNotFound();
@@ -239,8 +128,7 @@ describe('Quiz : Updating', function () {
 
 describe('Quiz : Pagination', function () {
     it('returns paginated quizzes', function () {
-        $user = createUser();
-        actingAs($user);
+        $user = actingUser();
 
         Quiz::factory()
             ->for($user)

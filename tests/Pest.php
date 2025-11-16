@@ -80,3 +80,28 @@ function loginAs(User $user, array $overrides = []): TestResponse
         'password' => 'password',
     ], $overrides));
 }
+
+
+/**
+ * preparing quiz data for testing
+ *
+ * @param  array  $overrides
+ * @return array
+ */
+function quizPayload(array $override = []): array
+{
+    return array_merge([
+        'title' => 'My Quiz',
+        'description' => 'Description...',
+        'status' => true,
+        'expire_date' => now()->addMonth()->toDateString(),
+        'questions' => [
+            [
+                'id' => 1,
+                'question' => 'What is Laravel?',
+                'type' => 'text',
+                'data' => null,
+            ],
+        ],
+    ], $override);
+}

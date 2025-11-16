@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Get the currently authenticated user.
@@ -10,7 +11,7 @@ use App\Models\User;
 function user(): ?User
 {
     /** @var User|null $user */
-    $user = auth()->user();
+    $user = Auth::user();
     return $user;
 }
 

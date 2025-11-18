@@ -19,11 +19,19 @@ class QuizRequest extends FormRequest
             ]);
         }
 
+        $requestStatus = null;
         if ($this->has('status')) {
-            $this->merge([
-                'status' => filter_var($this->status, FILTER_VALIDATE_BOOLEAN),
-            ]);
+            $requestStatus = filter_var($this->status, FILTER_VALIDATE_BOOLEAN);
         }
+
+        $expireDate = $this->expire_date ? \Carbon\Carbon::parse($this->expire_date) : null;
+        $today = \Carbon\Carbon::today();
+
+        $finalStatus = ($expireDate && $expireDate->lt($today)) ? false : $requestStatus;
+
+        $this->merge([
+            'status' => $finalStatus,
+        ]);
     }
 
     public function rules(): array

@@ -28,7 +28,8 @@ const props = defineProps<{
 const shouldHaveOptions = () =>
     props.question.type === 'select' ||
     props.question.type === 'radio' ||
-    props.question.type === 'checkbox';
+    props.question.type === 'checkbox' ||
+    props.question.type === 'multiple';
 
 const addOption = () => {
     if (!props.question.data) props.question.data = { options: [] };
@@ -68,7 +69,7 @@ const deleteOption = (optIndex: number) =>
         <Separator orientation="vertical" class="mx-auto my-6 !h-px !w-full" />
 
         <div class="w-full space-y-4">
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div class="grid gap-1.5">
                     <Label for="question-{{ question.id ?? index }}">
                         Question text

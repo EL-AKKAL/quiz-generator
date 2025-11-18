@@ -51,7 +51,7 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
     <Form
         :key="quiz.id"
         v-bind="formConfig"
-        class="grid w-full max-w-3xl gap-4 !py-5 pt-0 md:grid-cols-1 lg:grid-cols-2"
+        class="grid w-full max-w-3xl gap-5 !py-5 md:grid-cols-1 lg:grid-cols-2"
         v-slot="{ errors, processing }"
         @success="() => toast.success('Quiz saved successfully! 🎉')"
         @error="() => toast.error('Failed to save quiz. Please try again.')"
@@ -59,12 +59,12 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
         <div
             class="col-span-2 flex w-full flex-col items-center gap-3 md:flex-row"
         >
-            <div class="flex-1 self-center md:self-start">
+            <div class="w-full flex-1 self-center md:self-start">
                 <ReusableAvatar name="picture" v-model="quiz.picture" />
             </div>
         </div>
 
-        <div class="col-span-2 grid grid-cols-2 gap-2">
+        <div class="col-span-2 grid grid-cols-1 gap-5 md:grid-cols-2">
             <div class="grid gap-2">
                 <Label for="title">Quiz title</Label>
                 <Input

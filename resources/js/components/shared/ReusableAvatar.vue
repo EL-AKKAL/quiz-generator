@@ -80,7 +80,7 @@ const showDeleteIcon = ref(false);
             />
         </div>
         <div
-            class="dark:bg-surface-800 bg-primary-100/30 border-primary-50 dark:border-primary-800/20 flex h-full w-full flex-col justify-center rounded-lg border p-2 py-3.5 text-center"
+            class="dark:bg-surface-800 bg-primary-100/30 border-primary-50 dark:border-primary-800/20 mr-0 flex h-full w-full flex-col justify-center rounded-lg border p-2 py-3.5 text-center"
             :class="{
                 'box-border border-2 border-dashed': isActive,
             }"

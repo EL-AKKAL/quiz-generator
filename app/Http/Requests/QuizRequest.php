@@ -34,6 +34,7 @@ class QuizRequest extends FormRequest
             'expire_date' => 'nullable|date',
             'status' => 'nullable',
             'picture' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'picture_state' => 'string|in:removed,existing,new',
             'questions' => 'nullable|array',
             'questions.*.id' => 'required|integer',
             'questions.*.question' => 'required|string|max:255',

@@ -4,7 +4,6 @@ import Empty from '@/components/Empty.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import QuestionEditor from '@/components/questions/QuestionEditor.vue';
-import QuizPicture from '@/components/quizzes/ui/QuizPicture.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
@@ -16,6 +15,7 @@ import { Form, Link, usePage } from '@inertiajs/vue3';
 import { Loader2, Plus, Save, Undo2 } from 'lucide-vue-next';
 import { reactive } from 'vue';
 import { toast } from 'vue-sonner';
+import ReusableAvatar from '../shared/ReusableAvatar.vue';
 
 const page = usePage();
 const quiz: IQuiz = reactive({ ...(page.props.quiz as IQuiz) });
@@ -56,13 +56,14 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
         @success="() => toast.success('Quiz saved successfully! 🎉')"
         @error="() => toast.error('Failed to save quiz. Please try again.')"
     >
-        <div class="col-span-2 grid w-full grid-cols-2 items-center">
-            <QuizPicture :picture="quiz.picture" :title="quiz.title" />
-            <div>
-                <Label for="picture">Quiz Picture</Label>
-                <Input id="picture" name="picture" type="file" />
+        <div
+            class="col-span-2 flex w-full flex-col items-center gap-3 md:flex-row"
+        >
+            <div class="flex-1 self-center md:self-start">
+                <ReusableAvatar name="picture" v-model="quiz.picture" />
             </div>
         </div>
+
         <div class="col-span-2 grid grid-cols-2 gap-2">
             <div class="grid gap-2">
                 <Label for="title">Quiz title</Label>

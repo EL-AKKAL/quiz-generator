@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\QuizRequest;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Notifications\AnswerSubmittedNotification;
 use App\Services\PictureService;
 use App\Services\QuizService;
 use Illuminate\Http\Request;
@@ -113,6 +114,8 @@ class QuizController extends Controller
             ];
 
             $answer->questionAnswers()->create($finalAnswer);
+
+            new AnswerSubmittedNotification($quiz->id, $answer->id);
         }
 
         return redirect()->route('quizzes.view', $quiz->slug)

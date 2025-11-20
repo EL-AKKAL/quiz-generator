@@ -163,3 +163,17 @@ Run the entire test suite:
 ```bash
 php artisan test
 ```
+
+## 🏗️ Commands to help you generate fake content :
+
+Run this command to generate a sum of quizzes for a specific user
+
+```bash
+php artisan app:generate-quizzes
+```
+
+Run this command to generate a sum of questions for a specific quiz
+
+```bash
+php artisan app:quiz:generate-questions
+```

@@ -115,10 +115,22 @@ class QuizController extends Controller
 
             $answer->questionAnswers()->create($finalAnswer);
 
-            new AnswerSubmittedNotification($quiz->id, $answer->id);
+            user()->notify(new AnswerSubmittedNotification($quiz->id, $answer->id));
         }
 
         return redirect()->route('quizzes.view', $quiz->slug)
             ->with('success', 'Answers saved successfully!');
+    }
+
+    public function read($id)
+    {
+        $notification = user()
+            ->notifications()
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $notification->markAsRead();
+
+        return redirect()->back();
     }
 }

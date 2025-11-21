@@ -12,7 +12,7 @@ class AnswerSubmittedNotification extends Notification
 
     public function __construct(protected int $quizID, protected int $answerId)
     {
-        $this->$quizID = $quizID;
+        $this->quizID = $quizID;
         $this->answerId = $answerId;
     }
 
@@ -21,17 +21,17 @@ class AnswerSubmittedNotification extends Notification
         return ['database'];
     }
 
-    public function toMail(int $quizID, object $notifiable): MailMessage
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line("New answer has been submitted for Quiz : {$quizID}");
+            ->line("New answer has been submitted for Quiz: {$this->quizID}");
     }
 
-    public function toArray(int $quizID, int $answerId, object $notifiable): array
+    public function toArray(object $notifiable): array
     {
         return [
-            'quiz_id' => $quizID,
-            'answer' => $answerId
+            'quiz_id' => $this->quizID,
+            'answer_id' => $this->answerId,
         ];
     }
 }

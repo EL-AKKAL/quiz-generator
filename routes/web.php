@@ -10,6 +10,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('dashboard', DashboardController::class)->name('dashboard');
     Route::resource('quizzes', QuizController::class);
+
+    Route::post('notifications/{id}/read', [QuizController::class, 'read'])->name('quizzes.read');
 });
 
 Route::get('/view/{quiz:slug}', [QuizController::class, 'view'])->name('quizzes.view');

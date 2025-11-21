@@ -5,6 +5,7 @@ import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import type { BreadcrumbItemType } from '@/types';
 import AppVersion from './shared/AppVersion.vue';
+import Notifications from './shared/Notifications.vue';
 
 withDefaults(
     defineProps<{
@@ -29,6 +30,7 @@ withDefaults(
         <div class="flex items-center justify-center gap-2">
             <AppVersion />
             <GithubLink />
+            <Notifications />
             <ThemeSwitcher />
         </div>
     </header>

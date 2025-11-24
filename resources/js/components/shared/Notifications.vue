@@ -3,6 +3,7 @@ import QuizController from '@/actions/App/Http/Controllers/QuizController';
 import { Form, usePage } from '@inertiajs/vue3';
 import { Bell } from 'lucide-vue-next';
 import moment from 'moment';
+import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 import Button from '../ui/button/Button.vue';
 import DropdownMenu from '../ui/dropdown-menu/DropdownMenu.vue';
@@ -12,7 +13,12 @@ import DropdownMenuTrigger from '../ui/dropdown-menu/DropdownMenuTrigger.vue';
 
 const page = usePage();
 
-const notifications = page.props.auth?.notifications || [];
+const notifications = ref([...(page.props.auth?.notifications || [])]);
+
+const removeNotification = (id: number) => {
+    notifications.value = notifications.value.filter((n) => n.id !== id);
+    toast.success('you marked this notification as read');
+};
 </script>
 
 <template>
@@ -47,12 +53,7 @@ const notifications = page.props.auth?.notifications || [];
                 >
                     <Form
                         v-bind="QuizController.read.form({ id: notif.id })"
-                        @success="
-                            () =>
-                                toast.success(
-                                    'notification read successfully! 🎉',
-                                )
-                        "
+                        @success="removeNotification(notif.id)"
                         @error="
                             () =>
                                 toast.error(

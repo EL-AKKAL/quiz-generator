@@ -10,8 +10,6 @@ use Illuminate\Support\Str;
 
 class GenerateQuestions extends Command
 {
-
-
     protected $signature = 'app:quiz:generate-questions {quizID?} {count?}';
 
     protected $description = 'Add questions to a specified quiz';
@@ -24,8 +22,9 @@ class GenerateQuestions extends Command
 
             $quiz = Quiz::find((int) $quizID);
 
-            if (!$quiz) {
+            if (! $quiz) {
                 $this->error("Quiz with ID {$quizID} doesn't exist");
+
                 return 1;
             }
 
@@ -38,10 +37,12 @@ class GenerateQuestions extends Command
             });
 
             $this->info("done created {$count} questions for quiz #{$quiz->id} ({$quiz->name})");
+
             return self::SUCCESS;
 
         } catch (\Exception $e) {
-            $this->error('An error occurred: ' . $e->getMessage());
+            $this->error('An error occurred: '.$e->getMessage());
+
             return self::FAILURE;
         }
 
@@ -50,8 +51,9 @@ class GenerateQuestions extends Command
     private function generateQuestions(int $quizID, int $count): array
     {
         $time = now()->toDateTimeString();
+
         return collect(range(1, $count))
-            ->map(fn() => $this->generateQuestionRow($quizID, $time))
+            ->map(fn () => $this->generateQuestionRow($quizID, $time))
             ->all();
     }
 
@@ -61,7 +63,7 @@ class GenerateQuestions extends Command
 
         return [
             'quiz_id' => $quizID,
-            'question' => "Question for quiz $quizID: " . Str::random(10),
+            'question' => "Question for quiz $quizID: ".Str::random(10),
             'type' => $type->value,
             'data' => json_encode($this->generateQuestionData($type)),
             'created_at' => $time,
@@ -74,11 +76,11 @@ class GenerateQuestions extends Command
         return $type->isChoiceBased()
             ? [
                 'options' => collect(range(1, 4))
-                    ->map(fn($i) => [
+                    ->map(fn ($i) => [
                         'id' => (string) Str::uuid(),
                         'text' => "Option $i",
                     ])
-                    ->all()
+                    ->all(),
             ]
             : 'this is a random generated answer';
     }

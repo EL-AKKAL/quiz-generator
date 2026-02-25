@@ -5,7 +5,6 @@ use App\Models\Quiz;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Artisan;
 
 uses(RefreshDatabase::class);
 
@@ -31,7 +30,7 @@ describe('Jobs', function () {
             'status' => true,
         ]);
 
-        (new DisableExpiredQuizzesJob())->handle();
+        (new DisableExpiredQuizzesJob)->handle();
 
         expect($expired->fresh()->status)->toBeFalse();
         expect($active->fresh()->status)->toBeTrue();

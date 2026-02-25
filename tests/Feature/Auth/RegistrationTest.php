@@ -1,8 +1,10 @@
 <?php
 
-use function Pest\Laravel\{get, post, assertAuthenticated};
+use function Pest\Laravel\assertAuthenticated;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
 
-describe("Registration", function () {
+describe('Registration', function () {
 
     it('shows the register screen', function () {
         get(route('register'))->assertOk();

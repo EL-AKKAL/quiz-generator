@@ -13,10 +13,12 @@
 
 use App\Models\Quiz;
 use App\Models\User;
-use Illuminate\Testing\TestResponse;
-use function Pest\Laravel\{actingAs, post};
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\TestResponse;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\post;
 
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
@@ -51,20 +53,19 @@ expect()->extend('toBeOne', function () {
 /**
  * Create a new user for testing.
  *
- * @param  array  $attributes = []
- * @param  bool  $withTwoFactor = false
- * @return \App\Models\User
+ * @param  array  $attributes  = []
+ * @param  bool  $withTwoFactor  = false
  */
 function createUser(array $attributes = [], bool $withTwoFactor = false): User
 {
 
-    if ($withTwoFactor)
+    if ($withTwoFactor) {
         return User::factory()->create(array_merge([
             'two_factor_secret' => encrypt('test-secret'),
             'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
             'two_factor_confirmed_at' => now(),
         ], $attributes));
-
+    }
 
     return User::factory()->withoutTwoFactor()->create($attributes);
 }
@@ -73,14 +74,11 @@ function actingUser(?User $user = null): User
 {
     $user ??= createUser();
     actingAs($user);
+
     return $user;
 }
 /**
  * login as the given user.
- *
- * @param  User  $user
- * @param  array  $overrides
- * @return \Illuminate\Testing\TestResponse
  */
 function loginAs(User $user, array $overrides = []): TestResponse
 {
@@ -90,12 +88,10 @@ function loginAs(User $user, array $overrides = []): TestResponse
     ], $overrides));
 }
 
-
 /**
  * preparing quiz data for testing
  *
  * @param  array  $overrides
- * @return array
  */
 function quizPayload(array $override = []): array
 {
@@ -117,11 +113,9 @@ function quizPayload(array $override = []): array
 
 /**
  * Creates a quiz for a user with optional override payload.
- * @param  User  $user
+ *
  * @param  array  $overrides
- * @return Quiz
  */
-
 function createQuiz(User $user, array $override = []): Quiz
 {
     actingAs($user);

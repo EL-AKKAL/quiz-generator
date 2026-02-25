@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Answer extends Model
 {
     const CREATED_AT = null;
+
     const UPDATED_AT = null;
 
     protected $fillable = [
@@ -14,8 +15,6 @@ class Answer extends Model
         'end_date',
         'quiz_id',
     ];
-
-
 
     public function quiz()
     {

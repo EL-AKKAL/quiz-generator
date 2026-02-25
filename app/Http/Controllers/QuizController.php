@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
-
     public function index()
     {
         $quizzes = user()->quizzes()->withCount('questions')->orderBy('created_at', 'desc')->paginate(6);
@@ -25,7 +24,7 @@ class QuizController extends Controller
     public function create()
     {
         return inertia('Quizzes/Edit', [
-            'quiz' => new Quiz(),
+            'quiz' => new Quiz,
         ]);
     }
 
@@ -76,8 +75,9 @@ class QuizController extends Controller
 
     public function view(Quiz $quiz)
     {
-        if (!$quiz->status)
+        if (! $quiz->status) {
             abort(404);
+        }
 
         return inertia('Quizzes/View', [
             'quiz' => $quiz->load('questions'),
@@ -86,8 +86,9 @@ class QuizController extends Controller
 
     public function save_answers(Request $request, Quiz $quiz)
     {
-        if (!$quiz->status)
+        if (! $quiz->status) {
             return redirect()->route('quizzes.view', $quiz->slug);
+        }
 
         $answer = $quiz->answers()->create([
             'start_date' => now(),
@@ -95,12 +96,13 @@ class QuizController extends Controller
         ]);
 
         foreach ($request->all() as $questionId => $response) {
-            if (empty($response))
+            if (empty($response)) {
                 continue;
+            }
 
             $question = Question::where(['id' => $questionId, 'quiz_id' => $quiz->id])->get();
 
-            if (!$question) {
+            if (! $question) {
                 return redirect()->route('quizzes.view', $quiz->id)
                     ->with('error', 'Invalid question ID.');
             }
@@ -110,7 +112,7 @@ class QuizController extends Controller
                 'answer_id' => $answer->id,
                 'answer' => is_array($response)
                     ? json_encode($response)
-                    : $response
+                    : $response,
             ];
 
             $answer->questionAnswers()->create($finalAnswer);

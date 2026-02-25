@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 
 class QuizSeeder extends Seeder
 {
-
     public function run(): void
     {
         \App\Models\Quiz::factory()

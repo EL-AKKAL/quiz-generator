@@ -19,8 +19,9 @@ class GenerateQuizzes extends Command
 
             $user = \App\Models\User::find((int) $userID);
 
-            if (!$user) {
+            if (! $user) {
                 $this->error("User with ID {$userID} doesn't exist");
+
                 return 1;
             }
 
@@ -41,7 +42,8 @@ class GenerateQuizzes extends Command
             return self::SUCCESS;
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->error('Error creating quizzes: ' . $e->getMessage());
+            $this->error('Error creating quizzes: '.$e->getMessage());
+
             return self::FAILURE;
         }
     }

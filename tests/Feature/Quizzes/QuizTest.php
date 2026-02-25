@@ -1,13 +1,19 @@
 <?php
 
 use App\Models\Quiz;
-use function Pest\Laravel\{post, assertDatabaseHas, assertDatabaseMissing, delete, get, put};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
+use function Pest\Laravel\put;
+
 uses(RefreshDatabase::class);
 
-describe("Quiz Creation", function () {
+describe('Quiz Creation', function () {
     it('creates a quiz with questions and picture', function () {
         fakeStorage();
 
@@ -19,7 +25,7 @@ describe("Quiz Creation", function () {
 
         Storage::disk('public')->assertExists($quiz->picture);
 
-        expect($quiz->picture)->toBe('quizzes/' . $file->hashName());
+        expect($quiz->picture)->toBe('quizzes/'.$file->hashName());
 
         expect($quiz)->title->toBe($payload['title']);
         expect($quiz)->description->toBe($payload['description']);
@@ -89,8 +95,8 @@ describe('Quiz : Updating', function () {
             'status' => false,
             'picture' => $oldPic,
             'questions' => [
-                ['id' => 1, 'question' => 'Old question', 'type' => 'select']
-            ]
+                ['id' => 1, 'question' => 'Old question', 'type' => 'select'],
+            ],
         ]);
 
         Storage::disk('public')->assertExists($quiz->picture);
@@ -102,8 +108,8 @@ describe('Quiz : Updating', function () {
             'status' => true,
             'picture' => $newPic,
             'questions' => [
-                ['id' => 1, 'question' => 'Updated question', 'type' => 'text', 'data' => []]
-            ]
+                ['id' => 1, 'question' => 'Updated question', 'type' => 'text', 'data' => []],
+            ],
         ]))
             ->assertRedirect()
             ->assertSessionHasNoErrors();
@@ -137,7 +143,7 @@ describe('Quiz : Pagination', function () {
 
         get(route('quizzes.index'))
             ->assertInertia(
-                fn($page) => $page
+                fn ($page) => $page
                     ->component('Quizzes/Index')
                     ->has('quizzes.data', 6)
                     ->where('quizzes.total', 15)

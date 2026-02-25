@@ -13,14 +13,16 @@ const isDocument = () => typeof document !== 'undefined';
 
 export function updateTheme(value: Appearance) {
     if (!isBrowser()) return;
-    document.documentElement.classList.toggle('dark', value === THEME.DEFAULT_COLOR);
+    document.documentElement.classList.toggle(
+        'dark',
+        value === THEME.DEFAULT_COLOR,
+    );
 }
 
 const setCookie = (name: string, value: string, days = 365) => {
     if (!isDocument()) return;
     document.cookie = `${name}=${value};path=/;max-age=${days * THEME.ONE_DAY};SameSite=Lax`;
 };
-
 
 const getStoredAppearance = () => {
     if (!isBrowser()) return null;
@@ -38,7 +40,9 @@ const appearance = ref<Appearance>(THEME.DEFAULT_COLOR);
 
 export function useAppearance() {
     onMounted(() => {
-        const savedAppearance = localStorage.getItem(THEME.COOKIE_KEY) as Appearance | null;
+        const savedAppearance = localStorage.getItem(
+            THEME.COOKIE_KEY,
+        ) as Appearance | null;
 
         if (savedAppearance) appearance.value = savedAppearance;
     });

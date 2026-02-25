@@ -25,7 +25,7 @@ function dragover(event: DragEvent) {
     isActive.value = true;
 }
 
-function dragleave(event: DragEvent) {
+function dragleave() {
     isActive.value = false;
 }
 
@@ -53,41 +53,26 @@ const showDeleteIcon = ref(false);
 </script>
 
 <template>
-    <label
-        class="flex cursor-pointer items-center space-x-4"
-        @mouseover="showDeleteIcon = true"
-        @mouseleave="showDeleteIcon = false"
-        style="width: 100%"
-    >
-        <div
-            class="relative !size-16 rounded-full border border-primary bg-primary/15 !p-0 dark:border-primary/10"
-        >
+    <label class="flex cursor-pointer items-center space-x-4" @mouseover="showDeleteIcon = true"
+        @mouseleave="showDeleteIcon = false" style="width: 100%">
+        <div class="relative !size-16 rounded-full border border-primary bg-primary/15 !p-0 dark:border-primary/10">
             <Avatar v-if="imageUrl" class="size-16" shape="circle">
                 <AvatarImage class="h-full w-full" :src="imageUrl" />
             </Avatar>
             <div v-else class="flex h-16 w-16 items-center justify-center">
                 <img src="/default-quiz.png" alt="" />
             </div>
-            <Trash
-                v-if="file"
+            <Trash v-if="file"
                 class="absolute top-0 -right-3 size-6 cursor-pointer rounded-full bg-primary-foreground p-1 text-destructive"
                 :class="{
                     block: showDeleteIcon,
                     hidden: !showDeleteIcon,
-                }"
-                @click.prevent="file = null"
-                @click.stop
-            />
+                }" @click.prevent="file = null" @click.stop />
         </div>
-        <div
-            class="dark:bg-surface-800 bg-primary-100/30 border-primary-50 dark:border-primary-800/20 mr-0 flex h-full w-full flex-col justify-center rounded-lg border p-2 py-3.5 text-center"
+        <div class="dark:bg-surface-800 bg-primary-100/30 border-primary-50 dark:border-primary-800/20 mr-0 flex h-full w-full flex-col justify-center rounded-lg border p-2 py-3.5 text-center"
             :class="{
                 'box-border border-2 border-dashed': isActive,
-            }"
-            @dragover="dragover"
-            @dragleave="dragleave"
-            @drop="drop"
-        >
+            }" @dragover="dragover" @dragleave="dragleave" @drop="drop">
             <p class="mb-1 text-sm">
                 <span class="font-medium"> Click to import </span>
                 or slide and deposit
@@ -96,15 +81,8 @@ const showDeleteIcon = ref(false);
                 JPG, JPEG or WEBP (max. 2MB)
             </span>
         </div>
-        <input
-            type="file"
-            class="w-0"
-            hidden
-            @change="onChange"
-            accept=".jpg,.jpeg,.webp"
-            id="imageInput"
-            :name="name"
-        />
+        <input type="file" class="w-0" hidden @change="onChange" accept=".jpg,.jpeg,.webp" id="imageInput"
+            :name="name" />
         <input type="hidden" :name="`${name}_state`" :value="imageState" />
     </label>
 </template>

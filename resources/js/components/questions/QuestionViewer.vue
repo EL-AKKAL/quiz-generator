@@ -27,13 +27,13 @@ const SuccessfulSubmission = () => {
 
 <template>
     <Form v-if="!finished" :key="quiz.id" v-bind="QuizController.save_answers.form({ quiz: quiz.slug })"
-        v-slot="{ errors, processing, reset }" @success="SuccessfulSubmission" @error="
+        v-slot="{ processing, reset }" @success="SuccessfulSubmission" @error="
             () => toast.error('Failed to submit answers. Please try again.')
         ">
         <Heading class="my-5" title="Questions" />
         <Empty v-if="!quiz.questions?.length" unit="questions" />
         <div v-else class="space-y-4">
-            <div v-for="(question, index) in quiz.questions" :key="question.id" class="rounded-md border p-4">
+            <div v-for="(question) in quiz.questions" :key="question.id" class="rounded-md border p-4">
                 <h3 class="mb-2 text-lg font-semibold">
                     {{ question.question }} :
                 </h3>
@@ -43,7 +43,7 @@ const SuccessfulSubmission = () => {
                             <input type="radio" :name="`${question.id}`" :value="option.text" class="h-4 w-4" />
                             <label :for="`question_${question.id}`">{{
                                 option.text
-                                }}</label>
+                            }}</label>
                         </div>
                     </div>
                     <div v-else-if="question.type === 'select'">

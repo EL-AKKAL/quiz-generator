@@ -25,7 +25,7 @@ function dragover(event: DragEvent) {
     isActive.value = true;
 }
 
-function dragleave(event: DragEvent) {
+function dragleave() {
     isActive.value = false;
 }
 

@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-vue-next';
 
 export interface Auth {
     user: User;
-    notifications: Array<any>
+    notifications: Array<any>;
 }
 
 export interface BreadcrumbItem {
@@ -26,7 +26,7 @@ export type AppPageProps<
     auth: Auth;
     sidebarOpen: boolean;
     appVersion: string;
-    lastUpdated:string;
+    lastUpdated: string;
     questionTypes: Array<string>;
 };
 

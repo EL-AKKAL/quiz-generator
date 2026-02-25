@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Quiz;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class QuizService
 {
@@ -23,10 +24,11 @@ class QuizService
 
             unset($validated['picture_state']);
 
-            if (!$quiz)
+            if (! $quiz) {
                 $quiz = user()->quizzes()->create($validated);
-            else
+            } else {
                 $quiz->update($validated);
+            }
 
             QuestionsService::sync($quiz, $validated['questions'] ?? []);
 
@@ -41,8 +43,10 @@ class QuizService
                 return PictureService::store($file, $oldPath, $directory);
 
             case 'removed':
-                if ($oldPath)
+                if ($oldPath) {
                     PictureService::delete($oldPath);
+                }
+
                 return null;
 
             case 'existing':

@@ -86,7 +86,7 @@ class QuizController extends Controller
         ]);
     }
 
-    public function save_answers(Request $request, Quiz $quiz)
+    public function saveAnswers(Request $request, Quiz $quiz)
     {
         if (!$quiz->status) {
             return redirect()->route('quizzes.view', $quiz->slug);

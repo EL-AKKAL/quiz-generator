@@ -11,8 +11,6 @@ class DisableExpiredQuizzesJob implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct() {}
-
     public function handle(): void
     {
         $updated = Quiz::whereNotNull('expire_date')

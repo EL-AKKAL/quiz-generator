@@ -77,7 +77,7 @@ class QuizController extends Controller
 
     public function view(Quiz $quiz)
     {
-        if (!$quiz->status) {
+        if (! $quiz->status) {
             abort(404);
         }
 
@@ -88,7 +88,7 @@ class QuizController extends Controller
 
     public function save_answers(Request $request, Quiz $quiz)
     {
-        if (!$quiz->status) {
+        if (! $quiz->status) {
             return redirect()->route('quizzes.view', $quiz->slug);
         }
 
@@ -104,7 +104,7 @@ class QuizController extends Controller
 
             $question = Question::where(['id' => $questionId, 'quiz_id' => $quiz->id])->get();
 
-            if (!$question) {
+            if (! $question) {
                 return redirect()->route('quizzes.view', $quiz->id)
                     ->with('error', 'Invalid question ID.');
             }

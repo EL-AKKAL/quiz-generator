@@ -17,5 +17,5 @@ Route::middleware('auth')->group(function () {
 Route::get('/view/{quiz:slug}', [QuizController::class, 'view'])->name('quizzes.view');
 Route::post('/view/{quiz:slug}', [QuizController::class, 'saveAnswers'])->name('quizzes.save_answers');
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';

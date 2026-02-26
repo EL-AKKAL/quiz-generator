@@ -26,8 +26,13 @@ const SuccessfulSubmission = () => {
 </script>
 
 <template>
-    <Form v-if="!finished" :key="quiz.id" v-bind="QuizController.saveAnswers.form({ quiz: quiz.slug })"
-        v-slot="{ processing, reset }" @success="SuccessfulSubmission" @error="
+    <Form
+        v-if="!finished"
+        :key="quiz.id"
+        v-bind="QuizController.saveAnswers.form({ quiz: quiz.slug })"
+        v-slot="{ processing, reset }"
+        @success="SuccessfulSubmission"
+        @error="
             () => toast.error('Failed to submit answers. Please try again.')
         "
     >

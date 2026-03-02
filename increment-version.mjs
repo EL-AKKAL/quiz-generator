@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,8 +12,8 @@ const incrementVersion = () => {
     const packageJson = JSON.parse(fs.readFileSync(packagePath, "utf8"));
 
     const versionParts = packageJson.version
-        .split(".")
-        .map((part) => parseInt(part, 10));
+        .split('.')
+        .map((part) => Number.parseInt(part, 10));
 
     versionParts[2] += 1;
     const newVersion = versionParts.join(".");

@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\Auth;
  */
 function user(): ?User
 {
-    /** @var User|null $user */
-    $user = Auth::user();
-
-    return $user;
+    return Auth::user();
 }
 
 if (! function_exists('app_version')) {

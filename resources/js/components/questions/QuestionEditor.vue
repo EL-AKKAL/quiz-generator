@@ -139,15 +139,9 @@ const deleteOption = (optIndex: number) => {
                     >
                         Description (optional)
                     </Label>
-                    <Textarea
-                        class="mt-1 block w-full resize-none"
-                        name="description"
-                        v-model="descriptionModel"
-                        autocomplete="description"
-                        placeholder="Enter quiz description"
-                        :id="`question-description-${questionModel.id ?? index}`"
-                        rows="4"
-                    />
+                    <Textarea class="mt-1 block w-full resize-none" name="description" v-model="descriptionModel"
+                        placeholder="Enter quiz description" :id="`question-description-${questionModel.id ?? index}`"
+                        rows="4" />
                 </div>
             </div>
             <div class="grid grid-cols-1 gap-4">

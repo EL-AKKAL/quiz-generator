@@ -38,22 +38,15 @@ class QuizService
 
     protected static function handlePicture(?UploadedFile $file, ?string $oldPath, ?string $pictureState, string $directory): ?string
     {
-        switch ($pictureState) {
-            case 'new':
-                return PictureService::store($file, $oldPath, $directory);
-
-            case 'removed':
-                if ($oldPath) {
-                    PictureService::delete($oldPath);
-                }
-
-                return null;
-
-            case 'existing':
-                return $oldPath;
-
-            default:
-                return PictureService::store($file, $oldPath, $directory);
+        if ($pictureState === 'removed') {
+            if ($oldPath)
+                PictureService::delete($oldPath);
+            return null;
         }
+
+        if ($pictureState === 'existing')
+            return $oldPath;
+
+        return PictureService::store($file, $oldPath, $directory);
     }
 }

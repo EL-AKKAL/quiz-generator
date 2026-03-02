@@ -38,9 +38,9 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'notifications' => user()?->unreadNotifications?->take(10) ?? [],
             ],
-            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-            'appVersion' => app_version(),
-            'lastUpdated' => app_version_last_updated(),
+            'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'appVersion' => appVersion(),
+            'lastUpdated' => appVersionLastUpdated(),
             'questionTypes' => QuestionType::all(),
         ];
     }

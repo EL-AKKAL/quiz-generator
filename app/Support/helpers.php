@@ -11,8 +11,8 @@ function user(): ?User
     return Auth::user();
 }
 
-if (! function_exists('app_version')) {
-    function app_version(): string
+if (!function_exists('appVersion')) {
+    function appVersion(): string
     {
         $package = json_decode(file_get_contents(base_path('package.json')), true);
 
@@ -20,8 +20,8 @@ if (! function_exists('app_version')) {
     }
 }
 
-if (! function_exists('app_version_last_updated')) {
-    function app_version_last_updated(): ?string
+if (!function_exists('appVersionLastUpdated')) {
+    function appVersionLastUpdated(): ?string
     {
         $pkg = json_decode(file_get_contents(base_path('package.json')), true);
 

@@ -152,13 +152,8 @@ const deleteOption = (optIndex: number) => {
             <div class="grid grid-cols-1 gap-4">
                 <div v-if="shouldHaveOptions()">
                     <div class="flex w-full justify-between">
-                        <Label class="font-semibold">Options</Label>
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            type="button"
-                            @click="addOption()"
-                        >
+                        <span class="font-semibold">Options</span>
+                        <Button size="sm" variant="outline" type="button" @click="addOption()">
                             <Plus class="h-4 w-4" />
                         </Button>
                     </div>

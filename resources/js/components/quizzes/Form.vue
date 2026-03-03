@@ -72,21 +72,39 @@ const updateQuestion = (index: number, updatedQuestion: any) =>
         <div class="col-span-2 grid grid-cols-1 gap-5 md:grid-cols-2">
             <div class="grid gap-2">
                 <Label for="title">Quiz title</Label>
-                <Input id="title" class="mt-1 block w-full" name="title" :default-value="quiz.title" required
-                    placeholder="Enter quiz title" />
+                <Input
+                    id="title"
+                    class="mt-1 block w-full"
+                    name="title"
+                    :default-value="quiz.title"
+                    required
+                    placeholder="Enter quiz title"
+                />
                 <InputError class="mt-2" :message="errors.title" />
             </div>
             <div class="grid gap-2">
                 <Label for="expire_date">Expiration Date</Label>
-                <Input id="expire_date" class="mt-1 block w-full" name="expire_date" type="date"
-                    :default-value="formatDate(quiz.expire_date)" placeholder="Enter expiration date" />
+                <Input
+                    id="expire_date"
+                    class="mt-1 block w-full"
+                    name="expire_date"
+                    type="date"
+                    :default-value="formatDate(quiz.expire_date)"
+                    placeholder="Enter expiration date"
+                />
                 <InputError class="mt-2" :message="errors.expire_date" />
             </div>
         </div>
         <div class="col-span-2 grid gap-2">
             <Label for="description">Description</Label>
-            <Textarea id="description" class="mt-1 block w-full resize-none" name="description"
-                :default-value="quiz.description" placeholder="Enter quiz description" rows="6" />
+            <Textarea
+                id="description"
+                class="mt-1 block w-full resize-none"
+                name="description"
+                :default-value="quiz.description"
+                placeholder="Enter quiz description"
+                rows="6"
+            />
 
             <InputError class="mt-2" :message="errors.description" />
         </div>

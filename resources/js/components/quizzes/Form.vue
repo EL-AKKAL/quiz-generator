@@ -38,8 +38,13 @@ const addQuestion = (index?: number) => {
         updated_at: '',
     };
     if (!quiz.questions) quiz.questions = [];
-    if (index !== undefined) quiz.questions.splice(index + 1, 0, newQuestion);
-    else quiz.questions.push(newQuestion);
+
+    if (index == null) {
+        quiz.questions.push(newQuestion);
+        return;
+    }
+    quiz.questions.splice(index + 1, 0, newQuestion);
+
 };
 
 const deleteQuestion = (index: number) => quiz.questions?.splice(index, 1);

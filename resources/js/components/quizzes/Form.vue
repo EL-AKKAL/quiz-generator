@@ -44,7 +44,6 @@ const addQuestion = (index?: number) => {
         return;
     }
     quiz.questions.splice(index + 1, 0, newQuestion);
-
 };
 
 const deleteQuestion = (index: number) => quiz.questions?.splice(index, 1);

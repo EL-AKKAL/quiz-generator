@@ -71,12 +71,12 @@ class GenerateQuestions extends Command
         ];
     }
 
-    private function generateQuestionData(QuestionType $type): array|null
+    private function generateQuestionData(QuestionType $type): ?array
     {
         return $type->isChoiceBased()
             ? [
                 'options' => collect(range(1, 4))
-                    ->map(fn($i) => [
+                    ->map(fn ($i) => [
                         'id' => $i,
                         'text' => "Option $i",
                     ])

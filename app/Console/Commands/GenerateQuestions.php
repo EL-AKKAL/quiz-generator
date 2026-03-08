@@ -71,17 +71,17 @@ class GenerateQuestions extends Command
         ];
     }
 
-    private function generateQuestionData(QuestionType $type): array|string
+    private function generateQuestionData(QuestionType $type): array|null
     {
         return $type->isChoiceBased()
             ? [
                 'options' => collect(range(1, 4))
-                    ->map(fn ($i) => [
-                        'id' => (string) Str::uuid(),
+                    ->map(fn($i) => [
+                        'id' => $i,
                         'text' => "Option $i",
                     ])
                     ->all(),
             ]
-            : 'this is a random generated answer';
+            : null;
     }
 }

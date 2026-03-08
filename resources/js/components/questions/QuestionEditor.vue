@@ -41,9 +41,7 @@ const descriptionModel = computed({
 });
 
 const shouldHaveOptions = () =>
-    ['select', 'radio', 'checkbox', 'multiple'].includes(
-        questionModel.value.type,
-    );
+    ['select', 'radio', 'checkbox'].includes(questionModel.value.type);
 
 const addOption = () => {
     const updated = structuredClone(toRaw(questionModel.value));

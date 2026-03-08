@@ -7,7 +7,7 @@ enum QuestionType: string
     case SELECT = 'select';
     case RADIO = 'radio';
     case TEXT = 'text';
-    case MULTIPLE = 'multiple';
+    case MULTIPLE = 'checkbox';
 
     public static function random(): self
     {

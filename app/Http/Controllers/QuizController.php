@@ -88,21 +88,25 @@ class QuizController extends Controller
 
     public function saveAnswers(Request $request, Quiz $quiz)
     {
-        if (! $quiz->status) {
+        if (!$request['user_email'])
+            return redirect()->back()->withErrors(['email' => 'email is obligatory to save your record']);
+
+        if (!$quiz->status)
             return redirect()->route('quizzes.view', $quiz->slug);
-        }
 
         $answer = $quiz->answers()->create([
             'start_date' => now(),
             'end_date' => now(),
+            'user_email' => $request['user_email']
         ]);
 
-        foreach ($request->all() as $questionId => $response) {
-            if (empty($response)) {
-                continue;
+        foreach ($request->except('user_email') as $questionId => $response) {
+            if (empty($response) || !$response) {
+                return redirect()->back()
+                    ->withErrors(['answer all the questions before submitting.']);
             }
 
-            $question = Question::where(['id' => $questionId, 'quiz_id' => $quiz->id])->get();
+            $question = Question::where(['id' => $questionId, 'quiz_id' => $quiz->id])->first();
 
             if (! $question) {
                 return redirect()->route('quizzes.view', $quiz->id)

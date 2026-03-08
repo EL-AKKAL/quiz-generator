@@ -109,6 +109,18 @@ const SuccessfulSubmission = () => {
                     </div>
                 </div>
             </div>
+            <div class="rounded-md border p-4">
+                <label for="user_email" class="text-lg font-semibold">
+                    Your email
+                </label>
+                <Input
+                    type="email"
+                    id="user_email"
+                    class="mt-2"
+                    name="user_email"
+                    placeholder="example@email.com"
+                />
+            </div>
         </div>
         <div class="mt-5 flex w-full items-center justify-end gap-4">
             <Button type="submit" :disabled="processing" size="sm">

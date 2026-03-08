@@ -14,6 +14,7 @@ class Answer extends Model
         'start_date',
         'end_date',
         'quiz_id',
+        'user_email'
     ];
 
     public function quiz()

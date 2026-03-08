@@ -27,44 +27,80 @@ const SuccessfulSubmission = () => {
 
 <template>
     <div>TEST LABEL</div>
-    <Form v-if="!finished" :key="quiz.id" v-bind="QuizController.saveAnswers.form({ quiz: quiz.slug })"
-        v-slot="{ processing, reset }" @success="SuccessfulSubmission" @error="
+    <Form
+        v-if="!finished"
+        :key="quiz.id"
+        v-bind="QuizController.saveAnswers.form({ quiz: quiz.slug })"
+        v-slot="{ processing, reset }"
+        @success="SuccessfulSubmission"
+        @error="
             () => toast.error('Failed to submit answers. Please try again.')
-        ">
+        "
+    >
         <Heading class="my-5" title="Questions" />
         <Empty v-if="!quiz.questions?.length" unit="questions" />
         <div v-else class="space-y-4">
-            <div v-for="question in quiz.questions" :key="question.id" class="rounded-md border p-4">
+            <div
+                v-for="question in quiz.questions"
+                :key="question.id"
+                class="rounded-md border p-4"
+            >
                 <h3 class="mb-2 text-lg font-semibold">
                     {{ question.question }} :
                 </h3>
                 <div class="space-y-2">
                     <div v-if="question.type === 'radio'">
-                        <div v-for="option in question.data.options" :key="option.id" class="flex items-center gap-2">
-                            <input type="radio" :name="`${question.id}`" :value="option.text" class="h-4 w-4" />
+                        <div
+                            v-for="option in question.data.options"
+                            :key="option.id"
+                            class="flex items-center gap-2"
+                        >
+                            <input
+                                type="radio"
+                                :name="`${question.id}`"
+                                :value="option.text"
+                                class="h-4 w-4"
+                            />
                             <label :for="`question_${question.id}`">{{
                                 option.text
                             }}</label>
                         </div>
                     </div>
                     <div v-else-if="question.type === 'select'">
-                        <Select :name="`${question.id}`" id="question-type-{{ question.id ?? index }}">
+                        <Select
+                            :name="`${question.id}`"
+                            id="question-type-{{ question.id ?? index }}"
+                        >
                             <SelectTrigger class="!w-full">
                                 <SelectValue placeholder="Select a response" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem v-for="option in question.data.options" :key="option.id"
-                                    :value="option.text">
+                                <SelectItem
+                                    v-for="option in question.data.options"
+                                    :key="option.id"
+                                    :value="option.text"
+                                >
                                     {{ option.text }}
                                 </SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
                     <div v-else-if="question.type === 'checkbox'">
-                        <div v-for="option in question.data.options" :key="option.id" class="flex items-center gap-2">
-                            <input type="checkbox" :id="`question_${question.id}_${option.id}`"
-                                :name="`${question.id}[]`" :value="option.text" class="h-4 w-4" />
-                            <label :for="`question_${question.id}_${option.id}`">
+                        <div
+                            v-for="option in question.data.options"
+                            :key="option.id"
+                            class="flex items-center gap-2"
+                        >
+                            <input
+                                type="checkbox"
+                                :id="`question_${question.id}_${option.id}`"
+                                :name="`${question.id}[]`"
+                                :value="option.text"
+                                class="h-4 w-4"
+                            />
+                            <label
+                                :for="`question_${question.id}_${option.id}`"
+                            >
                                 {{ option.text }}
                             </label>
                         </div>
@@ -78,7 +114,13 @@ const SuccessfulSubmission = () => {
                 <label for="user_email" class="text-lg font-semibold">
                     Your email
                 </label>
-                <Input type="email" id="user_email" class="mt-2" name="user_email" placeholder="example@email.com" />
+                <Input
+                    type="email"
+                    id="user_email"
+                    class="mt-2"
+                    name="user_email"
+                    placeholder="example@email.com"
+                />
             </div>
         </div>
         <div class="mt-5 flex w-full items-center justify-end gap-4">

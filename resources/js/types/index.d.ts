@@ -43,6 +43,7 @@ export interface User {
 export interface Option {
     id: number;
     text: string;
+    score: number;
 }
 export interface Question {
     id: number;

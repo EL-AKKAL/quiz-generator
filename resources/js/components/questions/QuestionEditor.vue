@@ -52,6 +52,7 @@ const addOption = () => {
     updated.data.options.push({
         id: Date.now(),
         text: '',
+        score: 0,
     });
 
     questionModel.value = updated;
@@ -178,6 +179,13 @@ const deleteOption = (optIndex: number) => {
                                     type="text"
                                     v-model="option.text"
                                     class="w-full"
+                                    placeholder="title"
+                                />
+                                <Input
+                                    type="number"
+                                    v-model="option.score"
+                                    class="w-full"
+                                    placeholder="score"
                                 />
                                 <Button
                                     size="sm"

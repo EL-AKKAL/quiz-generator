@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\OptionScoreEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class QuizRequest extends FormRequest
 {
@@ -51,6 +53,10 @@ class QuizRequest extends FormRequest
             'questions.*.data.options' => 'nullable|array',
             'questions.*.data.options.*.id' => 'nullable|integer',
             'questions.*.data.options.*.text' => 'nullable|string|max:255',
+            'questions.*.data.options.*.score' => [
+                'required_with:questions.*.data.options',
+                new Enum(OptionScoreEnum::class),
+            ],
         ];
     }
 

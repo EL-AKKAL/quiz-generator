@@ -66,6 +66,7 @@ class QuizRequest extends FormRequest
             'questions.*.question.required' => 'The question field is required.',
             'questions.*.type.required' => 'The question type field is required.',
             'questions.*.type.in' => 'The selected question type is invalid. Allowed types are text, select, radio,checkbox.',
+            'questions.*.data.options.*.score' => 'questions with options must have score'
         ];
     }
 }

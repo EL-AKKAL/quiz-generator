@@ -9,8 +9,9 @@ class ScoringService
 {
     public static function calculate(Question $question, $response): float
     {
-        if ($question->type === 'text')
+        if ($question->type === 'text') {
             return 100;
+        }
 
         $options = $question->data['options'] ?? [];
 
@@ -19,8 +20,9 @@ class ScoringService
         $scores = collect($responses)->map(function ($selectedValue) use ($options) {
             $option = collect($options)->firstWhere('text', $selectedValue);
             // firstWhere('id', $selectedValue)
-            if (!$option || empty($option['score']))
+            if (! $option || empty($option['score'])) {
                 return 0;
+            }
 
             return OptionScoreEnum::from($option['score'])->mark();
         });

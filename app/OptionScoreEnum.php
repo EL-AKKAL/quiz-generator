@@ -34,7 +34,7 @@ enum OptionScoreEnum: string
 
     public static function options(): array
     {
-        return array_map(fn($case) => [
+        return array_map(fn ($case) => [
             'value' => $case->value,
             'label' => $case->label(),
             'mark' => $case->mark(),

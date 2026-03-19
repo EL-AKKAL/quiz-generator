@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\OptionScoreEnum;
 use App\QuestionType;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use App\OptionScoreEnum;
 
 class HandleInertiaRequests extends Middleware
 {

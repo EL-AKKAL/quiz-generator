@@ -17,5 +17,4 @@ class SubmitQuizRequest extends FormRequest
             'user_email' => 'required|string|max:255',
         ];
     }
-
 }

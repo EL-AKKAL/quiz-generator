@@ -122,7 +122,7 @@ class QuizController extends Controller
                     'answer' => is_array($response)
                         ? json_encode($response)
                         : $response,
-                    'score' => ScoringService::calculate($question, $response)
+                    'score' => ScoringService::calculate($question, $response),
                 ];
 
                 $answer->questionAnswers()->create($finalAnswer);
@@ -131,7 +131,7 @@ class QuizController extends Controller
             $finalScore = round($answer->questionAnswers()->avg('score'), 2);
 
             $answer->update([
-                'score' => $finalScore ?? 0
+                'score' => $finalScore ?? 0,
             ]);
 
             user()->notify(new AnswerSubmittedNotification($quiz->id, $answer->id));

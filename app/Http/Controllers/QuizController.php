@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuizRequest;
-use App\Models\Question;
+use App\Http\Requests\SubmitQuizRequest;
 use App\Models\Quiz;
 use App\Notifications\AnswerSubmittedNotification;
 use App\Services\PictureService;
 use App\Services\QuizService;
-use Illuminate\Http\Request;
+use App\Services\ScoringService;
+use Illuminate\Support\Facades\DB;
 
 class QuizController extends Controller
 {
@@ -77,56 +78,59 @@ class QuizController extends Controller
 
     public function view(Quiz $quiz)
     {
-        if (! $quiz->status) {
+        if (!$quiz->status)
             abort(404);
-        }
 
         return inertia('Quizzes/View', [
             'quiz' => $quiz->load('questions'),
         ]);
     }
 
-    public function saveAnswers(Request $request, Quiz $quiz)
+    public function saveAnswers(SubmitQuizRequest $request, Quiz $quiz)
     {
-        if (! $request['user_email']) {
-            return redirect()->back()->withErrors(['email' => 'email is obligatory to save your record']);
-        }
-
-        if (! $quiz->status) {
+        if (!$quiz->status)
             return redirect()->route('quizzes.view', $quiz->slug);
-        }
 
-        $answer = $quiz->answers()->create([
-            'start_date' => now(),
-            'end_date' => now(),
-            'user_email' => $request['user_email'],
-        ]);
+        DB::transaction(function () use ($request, $quiz) {
+            $answer = $quiz->answers()->create([
+                'start_date' => now(),
+                'end_date' => now(),
+                'user_email' => $request['user_email'],
+            ]);
 
-        foreach ($request->except('user_email') as $questionId => $response) {
-            if (empty($response) || ! $response) {
-                return redirect()->back()
-                    ->withErrors(['answer all the questions before submitting.']);
+            $questions = $quiz->questions()->get()->keyBy('id');
+
+            foreach ($request->input('answers') as $questionId => $response) {
+                if ($response === null || $response === '' || (is_array($response) && empty($response)))
+                    return redirect()->back()
+                        ->withErrors(['answer all the questions before submitting.']);
+
+                $question = $questions[$questionId] ?? null;
+
+                if (!$question)
+                    return redirect()->route('quizzes.view', $quiz->id)
+                        ->with('error', 'Invalid question ID.');
+
+                $finalAnswer = [
+                    'question_id' => $questionId,
+                    'answer_id' => $answer->id,
+                    'answer' => is_array($response)
+                        ? json_encode($response)
+                        : $response,
+                    'score' => ScoringService::calculate($question, $response)
+                ];
+
+                $answer->questionAnswers()->create($finalAnswer);
             }
 
-            $question = Question::where(['id' => $questionId, 'quiz_id' => $quiz->id])->first();
+            $finalScore = $answer->questionAnswers()->avg('score');
 
-            if (! $question) {
-                return redirect()->route('quizzes.view', $quiz->id)
-                    ->with('error', 'Invalid question ID.');
-            }
-
-            $finalAnswer = [
-                'question_id' => $questionId,
-                'answer_id' => $answer->id,
-                'answer' => is_array($response)
-                    ? json_encode($response)
-                    : $response,
-            ];
-
-            $answer->questionAnswers()->create($finalAnswer);
+            $answer->update([
+                'score' => $finalScore ?? 0
+            ]);
 
             user()->notify(new AnswerSubmittedNotification($quiz->id, $answer->id));
-        }
+        });
 
         return redirect()->route('quizzes.view', $quiz->slug)
             ->with('success', 'Answers saved successfully!');

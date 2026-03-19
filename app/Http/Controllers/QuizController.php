@@ -78,8 +78,9 @@ class QuizController extends Controller
 
     public function view(Quiz $quiz)
     {
-        if (!$quiz->status)
+        if (! $quiz->status) {
             abort(404);
+        }
 
         return inertia('Quizzes/View', [
             'quiz' => $quiz->load('questions'),
@@ -88,8 +89,9 @@ class QuizController extends Controller
 
     public function saveAnswers(SubmitQuizRequest $request, Quiz $quiz)
     {
-        if (!$quiz->status)
+        if (! $quiz->status) {
             return redirect()->route('quizzes.view', $quiz->slug);
+        }
 
         $createdAnswer = null;
 
@@ -103,18 +105,21 @@ class QuizController extends Controller
             $questions = $quiz->questions()->get()->keyBy('id');
 
             foreach ($request->input('answers') as $questionId => $response) {
-                if ($questionId === 0 && $response === null)
+                if ($questionId === 0 && $response === null) {
                     continue;
+                }
 
-                if ($response === null || $response === '' || (is_array($response) && empty($response)))
+                if ($response === null || $response === '' || (is_array($response) && empty($response))) {
                     return redirect()->back()
                         ->withErrors(['answer all the questions before submitting.']);
+                }
 
                 $question = $questions[$questionId] ?? null;
 
-                if (!$question)
+                if (! $question) {
                     return redirect()->route('quizzes.view', $quiz->id)
                         ->with('error', 'Invalid question ID.');
+                }
 
                 $finalAnswer = [
                     'question_id' => $questionId,

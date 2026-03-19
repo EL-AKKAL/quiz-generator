@@ -10,8 +10,9 @@ class ScoringService
     public static function calculate(Question $question, $response): float
     {
 
-        if ($question->type === QuestionType::TEXT)
+        if ($question->type === QuestionType::TEXT) {
             return 100;
+        }
 
         $options = $question->data['options'] ?? [];
 
@@ -19,6 +20,7 @@ class ScoringService
 
         $scores = collect($responses)->map(function ($selectedValue) use ($options) {
             $option = collect($options)->firstWhere('text', $selectedValue);
+
             return $option['score'] ?? 0;
         });
 

@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\Models\Question;
-use App\OptionScoreEnum;
+use App\QuestionType;
 
 class ScoringService
 {
     public static function calculate(Question $question, $response): float
     {
-        if ($question->type === 'text')
+
+        if ($question->type === QuestionType::TEXT)
             return 100;
 
         $options = $question->data['options'] ?? [];
@@ -18,11 +19,7 @@ class ScoringService
 
         $scores = collect($responses)->map(function ($selectedValue) use ($options) {
             $option = collect($options)->firstWhere('text', $selectedValue);
-            // firstWhere('id', $selectedValue)
-            if (!$option || empty($option['score']))
-                return 0;
-
-            return OptionScoreEnum::from($option['score'])->mark();
+            return $option['score'] ?? 0;
         });
 
         $sum = $scores->sum();

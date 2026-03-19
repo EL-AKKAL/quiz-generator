@@ -26,7 +26,6 @@ const SuccessfulSubmission = () => {
 </script>
 
 <template>
-    <div>TEST LABEL</div>
     <Form
         v-if="!finished"
         :key="quiz.id"

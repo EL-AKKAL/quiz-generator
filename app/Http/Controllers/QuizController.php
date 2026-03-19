@@ -128,7 +128,7 @@ class QuizController extends Controller
                 $answer->questionAnswers()->create($finalAnswer);
             }
 
-            $finalScore = $answer->questionAnswers()->avg('score');
+            $finalScore = round($answer->questionAnswers()->avg('score'), 2);
 
             $answer->update([
                 'score' => $finalScore ?? 0

@@ -103,6 +103,9 @@ class QuizController extends Controller
             $questions = $quiz->questions()->get()->keyBy('id');
 
             foreach ($request->input('answers') as $questionId => $response) {
+                if ($questionId === 0 && $response === null)
+                    continue;
+
                 if ($response === null || $response === '' || (is_array($response) && empty($response)))
                     return redirect()->back()
                         ->withErrors(['answer all the questions before submitting.']);

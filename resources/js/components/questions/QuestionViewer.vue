@@ -56,7 +56,7 @@ const SuccessfulSubmission = () => {
                         >
                             <input
                                 type="radio"
-                                :name="`${question.id}`"
+                                :name="`answers[${question.id}]`"
                                 :value="option.text"
                                 class="h-4 w-4"
                             />
@@ -67,7 +67,7 @@ const SuccessfulSubmission = () => {
                     </div>
                     <div v-else-if="question.type === 'select'">
                         <Select
-                            :name="`${question.id}`"
+                            :name="`answers[${question.id}]`"
                             id="question-type-{{ question.id ?? index }}"
                         >
                             <SelectTrigger class="!w-full">
@@ -93,7 +93,7 @@ const SuccessfulSubmission = () => {
                             <input
                                 type="checkbox"
                                 :id="`question_${question.id}_${option.id}`"
-                                :name="`${question.id}[]`"
+                                :name="`answers[${question.id}][]`"
                                 :value="option.text"
                                 class="h-4 w-4"
                             />
@@ -105,7 +105,7 @@ const SuccessfulSubmission = () => {
                         </div>
                     </div>
                     <div v-else-if="question.type === 'text'">
-                        <Input type="text" :name="`${question.id}`" />
+                        <Input type="text" :name="`answers[${question.id}]`" />
                     </div>
                 </div>
             </div>

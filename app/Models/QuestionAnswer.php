@@ -10,6 +10,7 @@ class QuestionAnswer extends Model
         'question_id',
         'answer_id',
         'answer',
+        'score',
     ];
 
     public function question()

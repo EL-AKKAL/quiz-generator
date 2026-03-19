@@ -91,7 +91,9 @@ class QuizController extends Controller
         if (!$quiz->status)
             return redirect()->route('quizzes.view', $quiz->slug);
 
-        DB::transaction(function () use ($request, $quiz) {
+        $createdAnswer = null;
+
+        DB::transaction(function () use ($request, $quiz, &$createdAnswer) {
             $answer = $quiz->answers()->create([
                 'start_date' => now(),
                 'end_date' => now(),
@@ -130,10 +132,14 @@ class QuizController extends Controller
             ]);
 
             user()->notify(new AnswerSubmittedNotification($quiz->id, $answer->id));
+            $createdAnswer = $answer->load('questionAnswers');
         });
 
-        return redirect()->route('quizzes.view', $quiz->slug)
-            ->with('success', 'Answers saved successfully!');
+        return inertia('Quizzes/View', [
+            'quiz' => $quiz->load('questions'),
+            'createdAnswer' => $createdAnswer,
+            'success' => 'Answers saved successfully!',
+        ]);
     }
 
     public function read($id)

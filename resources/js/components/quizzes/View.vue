@@ -14,6 +14,7 @@ const quiz: IQuiz = reactive({ ...(page.props.quiz as IQuiz) });
         <h1 class="py-5 text-center text-4xl font-black">
             {{ quiz.title }}
         </h1>
+        <pre> {{ page.props.createdAnswer }}</pre>
         <div class="relative h-96">
             <QuizPicture
                 class="h-full w-full rounded-none !object-cover"

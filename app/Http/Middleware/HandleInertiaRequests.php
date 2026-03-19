@@ -6,6 +6,7 @@ use App\QuestionType;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\OptionScoreEnum;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -42,6 +43,7 @@ class HandleInertiaRequests extends Middleware
             'appVersion' => appVersion(),
             'lastUpdated' => appVersionLastUpdated(),
             'questionTypes' => QuestionType::all(),
+            'scoreOptions' => OptionScoreEnum::options(),
         ];
     }
 }

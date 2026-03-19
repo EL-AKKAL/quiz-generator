@@ -52,7 +52,7 @@ const addOption = () => {
     updated.data.options.push({
         id: Date.now(),
         text: '',
-        score: 0,
+        score: null,
     });
 
     questionModel.value = updated;
@@ -181,12 +181,30 @@ const deleteOption = (optIndex: number) => {
                                     class="w-full"
                                     placeholder="title"
                                 />
-                                <Input
-                                    type="number"
+
+                                <Select
+                                    :id="`question-type-${questionModel.id ?? index}-score`"
                                     v-model="option.score"
-                                    class="w-full"
-                                    placeholder="score"
-                                />
+                                >
+                                    <SelectTrigger class="!w-full">
+                                        <SelectValue
+                                            placeholder="Select a score"
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>Scores</SelectLabel>
+                                            <SelectItem
+                                                v-for="score in $page.props
+                                                    .scoreOptions"
+                                                :value="score.mark"
+                                                :key="score.value"
+                                            >
+                                                {{ score.label }}
+                                            </SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
                                 <Button
                                     size="sm"
                                     variant="outline"

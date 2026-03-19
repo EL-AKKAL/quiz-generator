@@ -53,10 +53,7 @@ class QuizRequest extends FormRequest
             'questions.*.data.options' => 'nullable|array',
             'questions.*.data.options.*.id' => 'nullable|integer',
             'questions.*.data.options.*.text' => 'nullable|string|max:255',
-            'questions.*.data.options.*.score' => [
-                'required_with:questions.*.data.options',
-                new Enum(OptionScoreEnum::class),
-            ],
+            'questions.*.data.options.*.score' => ['required_with:questions.*.data.options|integer'],
         ];
     }
 

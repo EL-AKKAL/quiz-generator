@@ -18,6 +18,12 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+type ScoreOption = {
+    value: string;
+    label: string;
+    mark: number;
+};
+
 export type AppPageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
@@ -28,6 +34,7 @@ export type AppPageProps<
     appVersion: string;
     lastUpdated: string;
     questionTypes: Array<string>;
+    scoreOptions: ScoreOption[];
 };
 
 export interface User {
@@ -43,7 +50,7 @@ export interface User {
 export interface Option {
     id: number;
     text: string;
-    score: number;
+    score: number | null;
 }
 export interface Question {
     id: number;

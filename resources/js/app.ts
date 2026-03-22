@@ -2,12 +2,12 @@ import '../css/app.css';
 
 import { Toaster } from '@/components/ui/sonner';
 import { createInertiaApp } from '@inertiajs/vue3';
+import HighchartsVue from 'highcharts-vue';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import 'vue-sonner/style.css';
 import { initializeTheme } from './composables/useAppearance';
-import HighchartsVue from "highcharts-vue";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

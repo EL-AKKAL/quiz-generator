@@ -150,7 +150,7 @@ class QuizController extends Controller
                     ],
                 ],
                 'categories' => $answer->questionAnswers->map(function ($qa) {
-                    return 'Q' . $qa->question_id;
+                    return 'Q'.$qa->question_id;
                 })->values(),
                 'total' => $answer->score,
             ];

@@ -93,9 +93,9 @@ class QuizController extends Controller
             return redirect()->route('quizzes.view', $quiz->slug);
         }
 
-        $createdAnswer = null;
+        $results = null;
 
-        DB::transaction(function () use ($request, $quiz, &$createdAnswer) {
+        DB::transaction(function () use ($request, $quiz, &$results) {
             $answer = $quiz->answers()->create([
                 'start_date' => now(),
                 'end_date' => now(),
@@ -139,13 +139,26 @@ class QuizController extends Controller
                 'score' => $finalScore ?? 0,
             ]);
 
-            user()->notify(new AnswerSubmittedNotification($quiz->id, $answer->id));
-            $createdAnswer = $answer->load('questionAnswers');
+            // user()->notify(new AnswerSubmittedNotification($quiz->id, $answer->id));
+            $answer->load('questionAnswers', 'questionAnswers.question');
+
+            $results = [
+                'series' => [
+                    [
+                        'name' => 'Score',
+                        'data' => $answer->questionAnswers->pluck('score')->values(),
+                    ],
+                ],
+                'categories' => $answer->questionAnswers->map(function ($qa) {
+                    return 'Q' . $qa->question_id;
+                })->values(),
+                'total' => $answer->score,
+            ];
         });
 
         return inertia('Quizzes/View', [
             'quiz' => $quiz->load('questions'),
-            'createdAnswer' => $createdAnswer,
+            'results' => $results,
             'success' => 'Answers saved successfully!',
         ]);
     }
